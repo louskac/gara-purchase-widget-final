@@ -8,7 +8,7 @@ import replace from '@rollup/plugin-replace';
 import alias from '@rollup/plugin-alias';
 import { fileURLToPath } from 'url';
 import { dirname, resolve as pathResolve } from 'path';
-import dts from 'rollup-plugin-dts'; // Make sure this is imported
+import dts from 'rollup-plugin-dts';
 
 // ES Module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -43,7 +43,9 @@ export default [
           { find: 'stream', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') },
           { find: 'net', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') },
           { find: 'tls', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') },
-          { find: 'path', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') }
+          { find: 'path', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') },
+          { find: 'child_process', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') },
+          { find: 'url', replacement: pathResolve(__dirname, 'src/mock-node-modules.js') }
         ]
       }),
       replace({
@@ -52,12 +54,32 @@ export default [
           'use client': '',
           'use server': '',
           'process.env.NODE_ENV': JSON.stringify('production'),
+          // Direct module imports
           'import net from "net"': 'import { net } from "./src/mock-node-modules.js"',
           'import tls from "tls"': 'import { tls } from "./src/mock-node-modules.js"',
           'import crypto from "crypto"': 'import { crypto } from "./src/mock-node-modules.js"',
+          'import * as crypto from "crypto"': 'import { crypto } from "./src/mock-node-modules.js"',
           'import * as stream from "stream"': 'import { stream } from "./src/mock-node-modules.js"',
           'import { performance } from "perf_hooks"': 'import { performance } from "./src/mock-node-modules.js"',
-          'require("perf_hooks")': '{"performance": { now: () => Date.now() }}'
+          'import path from "path"': 'import { path } from "./src/mock-node-modules.js"',
+          'import * as path from "path"': 'import { path } from "./src/mock-node-modules.js"',
+          'import fs from "fs"': 'import { fs } from "./src/mock-node-modules.js"',
+          'import * as fs from "fs"': 'import { fs } from "./src/mock-node-modules.js"',
+          'import os from "os"': 'import { os } from "./src/mock-node-modules.js"',
+          'import * as os from "os"': 'import { os } from "./src/mock-node-modules.js"',
+          
+          // CommonJS requires
+          'require("perf_hooks")': '{"performance": { now: () => Date.now() }}',
+          'require("crypto")': 'require("./src/mock-node-modules.js").default',
+          'require("path")': 'require("./src/mock-node-modules.js").default',
+          'require("fs")': 'require("./src/mock-node-modules.js").default',
+          'require("os")': 'require("./src/mock-node-modules.js").default',
+          'require("stream")': 'require("./src/mock-node-modules.js").default',
+          'require("net")': 'require("./src/mock-node-modules.js").default',
+          'require("tls")': 'require("./src/mock-node-modules.js").default',
+          
+          // Process environment variables
+          'process.env': '({NODE_ENV:"production"})'
         }
       }),
       resolve({

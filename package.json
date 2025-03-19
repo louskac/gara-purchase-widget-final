@@ -6,6 +6,18 @@
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "browser": {
+    "crypto": "./src/mock-node-modules.js",
+    "path": "./src/mock-node-modules.js",
+    "fs": "./src/mock-node-modules.js",
+    "os": "./src/mock-node-modules.js",
+    "net": "./src/mock-node-modules.js",
+    "tls": "./src/mock-node-modules.js",
+    "stream": "./src/mock-node-modules.js",
+    "perf_hooks": "./src/mock-node-modules.js",
+    "child_process": "./src/mock-node-modules.js",
+    "url": "./src/mock-node-modules.js"
+  },
   "files": [
     "dist"
   ],
@@ -61,7 +73,7 @@
     "drizzle-orm": "^0.35.1",
     "lucide-react": "^0.452.0",
     "modified-react-progress-bar.git": "github:louskac/modified-react-progress-bar",
-    "postgres": "^3.4.4",
+    "postgres": "^3.4.5",
     "react-number-format": "^5.4.3",
     "tailwind-merge": "^2.5.3",
     "zustand": "^5.0.0"

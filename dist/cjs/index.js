@@ -4461,7 +4461,7 @@ const connectors = rainbowkit.connectorsForWallets([
     appName: "PenguinPresale",
     projectId: process.env.NEXT_PUBLIC_CONNECT_WALLET_PROJECT_ID,
 });
-const config$1 = rainbowkit.getDefaultConfig({
+const config = rainbowkit.getDefaultConfig({
     appName: "PenguinPresale",
     connectors,
     projectId: process.env.NEXT_PUBLIC_CONNECT_WALLET_PROJECT_ID,
@@ -4478,7 +4478,7 @@ const config$1 = rainbowkit.getDefaultConfig({
     }),
 });
 const WalletProviders = ({ children, locale }) => {
-    return (jsxRuntime.jsx(GaraStoreProvider, { children: jsxRuntime.jsx(wagmi.WagmiProvider, { config: config$1, children: jsxRuntime.jsx(rainbowkit.RainbowKitProvider, { theme: rainbowkit.darkTheme(), locale: locale, children: children }) }) }));
+    return (jsxRuntime.jsx(GaraStoreProvider, { children: jsxRuntime.jsx(wagmi.WagmiProvider, { config: config, children: jsxRuntime.jsx(rainbowkit.RainbowKitProvider, { theme: rainbowkit.darkTheme(), locale: locale, children: children }) }) }));
 };
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4873,7 +4873,7 @@ const resolveFetch$3 = (customFetch) => {
         _fetch = customFetch;
     }
     else if (typeof fetch === 'undefined') {
-        _fetch = (...args) => Promise.resolve().then(function () { return browser$4; }).then(({ default: fetch }) => fetch(...args));
+        _fetch = (...args) => Promise.resolve().then(function () { return browser$3; }).then(({ default: fetch }) => fetch(...args));
     }
     else {
         _fetch = fetch;
@@ -5068,7 +5068,7 @@ const Headers$1 = globalObject.Headers;
 const Request$1 = globalObject.Request;
 const Response$1 = globalObject.Response;
 
-var browser$4 = /*#__PURE__*/Object.freeze({
+var browser$3 = /*#__PURE__*/Object.freeze({
     __proto__: null,
     Headers: Headers$1,
     Request: Request$1,
@@ -5101,7 +5101,7 @@ var __importDefault$5 = (commonjsGlobal && commonjsGlobal.__importDefault) || fu
 };
 Object.defineProperty(PostgrestBuilder$2, "__esModule", { value: true });
 // @ts-ignore
-const node_fetch_1 = __importDefault$5(browser$4);
+const node_fetch_1 = __importDefault$5(browser$3);
 const PostgrestError_1$1 = __importDefault$5(PostgrestError$2);
 let PostgrestBuilder$1 = class PostgrestBuilder {
     constructor(builder) {
@@ -6185,15 +6185,15 @@ PostgrestQueryBuilder$2.default = PostgrestQueryBuilder$1;
 
 var constants = {};
 
-var version$8 = {};
+var version$6 = {};
 
-Object.defineProperty(version$8, "__esModule", { value: true });
-version$8.version = void 0;
-version$8.version = '0.0.0-automated';
+Object.defineProperty(version$6, "__esModule", { value: true });
+version$6.version = void 0;
+version$6.version = '0.0.0-automated';
 
 Object.defineProperty(constants, "__esModule", { value: true });
 constants.DEFAULT_HEADERS = void 0;
-const version_1 = version$8;
+const version_1 = version$6;
 constants.DEFAULT_HEADERS = { 'X-Client-Info': `postgrest-js/${version_1.version}` };
 
 var __importDefault$1 = (commonjsGlobal && commonjsGlobal.__importDefault) || function (mod) {
@@ -6353,9 +6353,9 @@ const {
   PostgrestError,
 } = _default;
 
-const version$7 = '2.11.2';
+const version$5 = '2.11.2';
 
-const DEFAULT_HEADERS$3 = { 'X-Client-Info': `realtime-js/${version$7}` };
+const DEFAULT_HEADERS$3 = { 'X-Client-Info': `realtime-js/${version$5}` };
 const VSN = '1.0.0';
 const DEFAULT_TIMEOUT = 10000;
 const WS_CLOSE_NORMAL = 1000;
@@ -7557,7 +7557,7 @@ class RealtimeClient {
                 _fetch = customFetch;
             }
             else if (typeof fetch === 'undefined') {
-                _fetch = (...args) => Promise.resolve().then(function () { return browser$4; }).then(({ default: fetch }) => fetch(...args));
+                _fetch = (...args) => Promise.resolve().then(function () { return browser$3; }).then(({ default: fetch }) => fetch(...args));
             }
             else {
                 _fetch = fetch;
@@ -8022,7 +8022,7 @@ const resolveFetch$2 = (customFetch) => {
         _fetch = customFetch;
     }
     else if (typeof fetch === 'undefined') {
-        _fetch = (...args) => Promise.resolve().then(function () { return browser$4; }).then(({ default: fetch }) => fetch(...args));
+        _fetch = (...args) => Promise.resolve().then(function () { return browser$3; }).then(({ default: fetch }) => fetch(...args));
     }
     else {
         _fetch = fetch;
@@ -8032,7 +8032,7 @@ const resolveFetch$2 = (customFetch) => {
 const resolveResponse = () => __awaiter$6(void 0, void 0, void 0, function* () {
     if (typeof Response === 'undefined') {
         // @ts-ignore
-        return (yield Promise.resolve().then(function () { return browser$4; })).Response;
+        return (yield Promise.resolve().then(function () { return browser$3; })).Response;
     }
     return Response;
 });
@@ -8678,9 +8678,9 @@ class StorageFileApi {
 }
 
 // generated by genversion
-const version$6 = '2.7.1';
+const version$4 = '2.7.1';
 
-const DEFAULT_HEADERS$2 = { 'X-Client-Info': `storage-js/${version$6}` };
+const DEFAULT_HEADERS$2 = { 'X-Client-Info': `storage-js/${version$4}` };
 
 var __awaiter$3 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -8855,7 +8855,7 @@ class StorageClient extends StorageBucketApi {
     }
 }
 
-const version$5 = '2.49.1';
+const version$3 = '2.49.1';
 
 let JS_ENV = '';
 // @ts-ignore
@@ -8871,7 +8871,7 @@ else if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative'
 else {
     JS_ENV = 'node';
 }
-const DEFAULT_HEADERS$1 = { 'X-Client-Info': `supabase-js-${JS_ENV}/${version$5}` };
+const DEFAULT_HEADERS$1 = { 'X-Client-Info': `supabase-js-${JS_ENV}/${version$3}` };
 const DEFAULT_GLOBAL_OPTIONS = {
     headers: DEFAULT_HEADERS$1,
 };
@@ -8963,7 +8963,7 @@ function applySettingDefaults(options, defaults) {
     return result;
 }
 
-const version$4 = '2.68.0';
+const version$2 = '2.68.0';
 
 /** Current session will be checked for refresh at this interval. */
 const AUTO_REFRESH_TICK_DURATION_MS = 30 * 1000;
@@ -8976,7 +8976,7 @@ const AUTO_REFRESH_TICK_THRESHOLD = 3;
 const EXPIRY_MARGIN_MS = AUTO_REFRESH_TICK_THRESHOLD * AUTO_REFRESH_TICK_DURATION_MS;
 const GOTRUE_URL = 'http://localhost:9999';
 const STORAGE_KEY = 'supabase.auth.token';
-const DEFAULT_HEADERS = { 'X-Client-Info': `gotrue-js/${version$4}` };
+const DEFAULT_HEADERS = { 'X-Client-Info': `gotrue-js/${version$2}` };
 const API_VERSION_HEADER_NAME = 'X-Supabase-Api-Version';
 const API_VERSIONS = {
     '2024-01-01': {
@@ -9063,7 +9063,7 @@ const resolveFetch = (customFetch) => {
         _fetch = customFetch;
     }
     else if (typeof fetch === 'undefined') {
-        _fetch = (...args) => Promise.resolve().then(function () { return browser$4; }).then(({ default: fetch }) => fetch(...args));
+        _fetch = (...args) => Promise.resolve().then(function () { return browser$3; }).then(({ default: fetch }) => fetch(...args));
     }
     else {
         _fetch = fetch;
@@ -10116,7 +10116,7 @@ class GoTrueClient {
     }
     _debug(...args) {
         if (this.logDebugMessages) {
-            this.logger(`GoTrueClient@${this.instanceID} (${version$4}) ${new Date().toISOString()}`, ...args);
+            this.logger(`GoTrueClient@${this.instanceID} (${version$2}) ${new Date().toISOString()}`, ...args);
         }
         return this;
     }
@@ -12719,7 +12719,7 @@ class WithSubquery extends Subquery {
 }
 
 // package.json
-var version$3 = "0.35.3";
+var version$1 = "0.35.3";
 
 let otel;
 let rawTracer;
@@ -12729,7 +12729,7 @@ const tracer = {
       return fn();
     }
     if (!rawTracer) {
-      rawTracer = otel.trace.getTracer("drizzle-orm", version$3);
+      rawTracer = otel.trace.getTracer("drizzle-orm", version$1);
     }
     return iife(
       (otel2, rawTracer2) => rawTracer2.startActiveSpan(
@@ -15164,503 +15164,276 @@ function mapRelationalRow(tablesConfig, tableConfig, row, buildQueryResultSelect
   return result;
 }
 
-var main$1 = {exports: {}};
-
 // src/mock-node-modules.js
+console.log('MOCK NODE MODULES LOADED');
 
 // Performance from perf_hooks
 const performance = { 
-    now: () => Date.now() 
-  };
-  
-  // Default exports needed by Node modules
-  const crypto$2 = {
-    randomBytes: (size) => new Uint8Array(size),
-    createHash: () => ({
-      update: () => ({
-        digest: () => 'mock-hash'
-      })
+  now: () => Date.now() 
+};
+
+// Crypto module with complete implementation
+const crypto$1 = {
+  // This implementation mimics crypto.createHash().update().digest()
+  createHash: (algorithm) => ({
+    update: (data) => ({
+      digest: (encoding) => {
+        // Simple hash function that works in a browser
+        if (typeof data === 'string' || data instanceof Buffer) {
+          const str = typeof data === 'string' ? data : data.toString('utf8');
+          const hash = Array.from(str)
+            .map(c => c.charCodeAt(0).toString(16).padStart(2, '0'))
+            .join('');
+            
+          return encoding === 'hex' ? hash : Buffer.from(hash).toString(encoding || 'hex');
+        }
+        return 'mock-hash';
+      }
     })
-  };
+  }),
   
-  const os$1 = {
-    platform: () => 'browser',
-    cpus: () => [{ model: 'Browser CPU' }]
-  };
-  
-  const fs$1 = {
-    readFileSync: () => null
-  };
-  
-  const stream = {
-    Duplex: class Duplex {}
-  };
-  
-  const net = {
-    connect: () => null
-  };
-  
-  const tls = {
-    connect: () => null
-  };
-  
-  const path$1 = {
-    join: (...args) => args.join('/'),
-    resolve: (...args) => args.join('/')
-  };
-  var crypto$3 = { crypto: crypto$2, os: os$1, fs: fs$1, stream, net, tls, path: path$1, performance };
-
-var mockNodeModules = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    crypto: crypto$2,
-    default: crypto$3,
-    fs: fs$1,
-    net: net,
-    os: os$1,
-    path: path$1,
-    performance: performance,
-    stream: stream,
-    tls: tls
-});
-
-var name = "dotenv";
-var version$2 = "16.4.7";
-var description = "Loads environment variables from .env file";
-var main = "lib/main.js";
-var types$1 = "lib/main.d.ts";
-var exports$1 = {
-	".": {
-		types: "./lib/main.d.ts",
-		require: "./lib/main.js",
-		"default": "./lib/main.js"
-	},
-	"./config": "./config.js",
-	"./config.js": "./config.js",
-	"./lib/env-options": "./lib/env-options.js",
-	"./lib/env-options.js": "./lib/env-options.js",
-	"./lib/cli-options": "./lib/cli-options.js",
-	"./lib/cli-options.js": "./lib/cli-options.js",
-	"./package.json": "./package.json"
-};
-var scripts = {
-	"dts-check": "tsc --project tests/types/tsconfig.json",
-	lint: "standard",
-	pretest: "npm run lint && npm run dts-check",
-	test: "tap run --allow-empty-coverage --disable-coverage --timeout=60000",
-	"test:coverage": "tap run --show-full-coverage --timeout=60000 --coverage-report=lcov",
-	prerelease: "npm test",
-	release: "standard-version"
-};
-var repository = {
-	type: "git",
-	url: "git://github.com/motdotla/dotenv.git"
-};
-var funding = "https://dotenvx.com";
-var keywords = [
-	"dotenv",
-	"env",
-	".env",
-	"environment",
-	"variables",
-	"config",
-	"settings"
-];
-var readmeFilename = "README.md";
-var license = "BSD-2-Clause";
-var devDependencies = {
-	"@types/node": "^18.11.3",
-	decache: "^4.6.2",
-	sinon: "^14.0.1",
-	standard: "^17.0.0",
-	"standard-version": "^9.5.0",
-	tap: "^19.2.0",
-	typescript: "^4.8.4"
-};
-var engines = {
-	node: ">=12"
-};
-var browser$3 = {
-	fs: false
-};
-var require$$4 = {
-	name: name,
-	version: version$2,
-	description: description,
-	main: main,
-	types: types$1,
-	exports: exports$1,
-	scripts: scripts,
-	repository: repository,
-	funding: funding,
-	keywords: keywords,
-	readmeFilename: readmeFilename,
-	license: license,
-	devDependencies: devDependencies,
-	engines: engines,
-	browser: browser$3
-};
-
-const fs = mockNodeModules;
-const path = mockNodeModules;
-const os = mockNodeModules;
-const crypto$1 = mockNodeModules;
-const packageJson = require$$4;
-
-const version$1 = packageJson.version;
-
-const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
-
-// Parse src into an Object
-function parse$1 (src) {
-  const obj = {};
-
-  // Convert buffer to string
-  let lines = src.toString();
-
-  // Convert line breaks to same format
-  lines = lines.replace(/\r\n?/mg, '\n');
-
-  let match;
-  while ((match = LINE.exec(lines)) != null) {
-    const key = match[1];
-
-    // Default undefined or null to empty string
-    let value = (match[2] || '');
-
-    // Remove whitespace
-    value = value.trim();
-
-    // Check if double quoted
-    const maybeQuote = value[0];
-
-    // Remove surrounding quotes
-    value = value.replace(/^(['"`])([\s\S]*)\1$/mg, '$2');
-
-    // Expand newlines if double quoted
-    if (maybeQuote === '"') {
-      value = value.replace(/\\n/g, '\n');
-      value = value.replace(/\\r/g, '\r');
-    }
-
-    // Add to object
-    obj[key] = value;
-  }
-
-  return obj
-}
-
-function _parseVault (options) {
-  const vaultPath = _vaultPath(options);
-
-  // Parse .env.vault
-  const result = DotenvModule.configDotenv({ path: vaultPath });
-  if (!result.parsed) {
-    const err = new Error(`MISSING_DATA: Cannot parse ${vaultPath} for an unknown reason`);
-    err.code = 'MISSING_DATA';
-    throw err
-  }
-
-  // handle scenario for comma separated keys - for use with key rotation
-  // example: DOTENV_KEY="dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=prod,dotenv://:key_7890@dotenvx.com/vault/.env.vault?environment=prod"
-  const keys = _dotenvKey(options).split(',');
-  const length = keys.length;
-
-  let decrypted;
-  for (let i = 0; i < length; i++) {
-    try {
-      // Get full key
-      const key = keys[i].trim();
-
-      // Get instructions for decrypt
-      const attrs = _instructions(result, key);
-
-      // Decrypt
-      decrypted = DotenvModule.decrypt(attrs.ciphertext, attrs.key);
-
-      break
-    } catch (error) {
-      // last key
-      if (i + 1 >= length) {
-        throw error
+  // This implementation mimics crypto.randomBytes().toString()
+  randomBytes: (size) => {
+    const bytes = new Uint8Array(size);
+    if (typeof window !== 'undefined' && window.crypto) {
+      window.crypto.getRandomValues(bytes);
+    } else {
+      for (let i = 0; i < size; i++) {
+        bytes[i] = Math.floor(Math.random() * 256);
       }
-      // try next key
     }
-  }
-
-  // Parse decrypted .env string
-  return DotenvModule.parse(decrypted)
-}
-
-function _log (message) {
-  console.log(`[dotenv@${version$1}][INFO] ${message}`);
-}
-
-function _warn (message) {
-  console.log(`[dotenv@${version$1}][WARN] ${message}`);
-}
-
-function _debug (message) {
-  console.log(`[dotenv@${version$1}][DEBUG] ${message}`);
-}
-
-function _dotenvKey (options) {
-  // prioritize developer directly setting options.DOTENV_KEY
-  if (options && options.DOTENV_KEY && options.DOTENV_KEY.length > 0) {
-    return options.DOTENV_KEY
-  }
-
-  // secondary infra already contains a DOTENV_KEY environment variable
-  if (process.env.DOTENV_KEY && process.env.DOTENV_KEY.length > 0) {
-    return process.env.DOTENV_KEY
-  }
-
-  // fallback to empty string
-  return ''
-}
-
-function _instructions (result, dotenvKey) {
-  // Parse DOTENV_KEY. Format is a URI
-  let uri;
-  try {
-    uri = new URL(dotenvKey);
-  } catch (error) {
-    if (error.code === 'ERR_INVALID_URL') {
-      const err = new Error('INVALID_DOTENV_KEY: Wrong format. Must be in valid uri format like dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=development');
-      err.code = 'INVALID_DOTENV_KEY';
-      throw err
-    }
-
-    throw error
-  }
-
-  // Get decrypt key
-  const key = uri.password;
-  if (!key) {
-    const err = new Error('INVALID_DOTENV_KEY: Missing key part');
-    err.code = 'INVALID_DOTENV_KEY';
-    throw err
-  }
-
-  // Get environment
-  const environment = uri.searchParams.get('environment');
-  if (!environment) {
-    const err = new Error('INVALID_DOTENV_KEY: Missing environment part');
-    err.code = 'INVALID_DOTENV_KEY';
-    throw err
-  }
-
-  // Get ciphertext payload
-  const environmentKey = `DOTENV_VAULT_${environment.toUpperCase()}`;
-  const ciphertext = result.parsed[environmentKey]; // DOTENV_VAULT_PRODUCTION
-  if (!ciphertext) {
-    const err = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${environmentKey} in your .env.vault file.`);
-    err.code = 'NOT_FOUND_DOTENV_ENVIRONMENT';
-    throw err
-  }
-
-  return { ciphertext, key }
-}
-
-function _vaultPath (options) {
-  let possibleVaultPath = null;
-
-  if (options && options.path && options.path.length > 0) {
-    if (Array.isArray(options.path)) {
-      for (const filepath of options.path) {
-        if (fs.existsSync(filepath)) {
-          possibleVaultPath = filepath.endsWith('.vault') ? filepath : `${filepath}.vault`;
+    
+    return {
+      toString: (encoding) => {
+        if (encoding === 'hex') {
+          return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
         }
+        return Array.from(bytes).join('');
       }
+    };
+  }
+};
+
+// Buffer implementation for browser
+class BufferPolyfill {
+  constructor(input, encoding) {
+    if (typeof input === 'string') {
+      this.data = new TextEncoder().encode(input);
+    } else if (input instanceof Uint8Array) {
+      this.data = input;
     } else {
-      possibleVaultPath = options.path.endsWith('.vault') ? options.path : `${options.path}.vault`;
-    }
-  } else {
-    possibleVaultPath = path.resolve(process.cwd(), '.env.vault');
-  }
-
-  if (fs.existsSync(possibleVaultPath)) {
-    return possibleVaultPath
-  }
-
-  return null
-}
-
-function _resolveHome (envPath) {
-  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath
-}
-
-function _configVault (options) {
-  _log('Loading env from encrypted .env.vault');
-
-  const parsed = DotenvModule._parseVault(options);
-
-  let processEnv = process.env;
-  if (options && options.processEnv != null) {
-    processEnv = options.processEnv;
-  }
-
-  DotenvModule.populate(processEnv, parsed, options);
-
-  return { parsed }
-}
-
-function configDotenv (options) {
-  const dotenvPath = path.resolve(process.cwd(), '.env');
-  let encoding = 'utf8';
-  const debug = Boolean(options && options.debug);
-
-  if (options && options.encoding) {
-    encoding = options.encoding;
-  } else {
-    if (debug) {
-      _debug('No encoding is specified. UTF-8 is used by default');
+      this.data = new Uint8Array(0);
     }
   }
-
-  let optionPaths = [dotenvPath]; // default, look for .env
-  if (options && options.path) {
-    if (!Array.isArray(options.path)) {
-      optionPaths = [_resolveHome(options.path)];
-    } else {
-      optionPaths = []; // reset default
-      for (const filepath of options.path) {
-        optionPaths.push(_resolveHome(filepath));
-      }
+  
+  toString(encoding) {
+    if (encoding === 'hex') {
+      return Array.from(this.data).map(b => b.toString(16).padStart(2, '0')).join('');
     }
+    return new TextDecoder().decode(this.data);
   }
+  
+  static from(input, encoding) {
+    return new BufferPolyfill(input, encoding);
+  }
+}
 
-  // Build the parsed data in a temporary object (because we need to return it).  Once we have the final
-  // parsed data, we will combine it with process.env (or options.processEnv if provided).
-  let lastError;
-  const parsedAll = {};
-  for (const path of optionPaths) {
+// Expose Buffer if it doesn't exist
+if (typeof Buffer === 'undefined') {
+  global.Buffer = BufferPolyfill;
+}
+
+// Path module with full implementation
+const path = {
+  resolve: (...args) => args.filter(Boolean).join('/').replace(/\/+/g, '/'),
+  join: (...args) => args.filter(Boolean).join('/').replace(/\/+/g, '/'),
+  dirname: (path) => {
+    const parts = path.split('/');
+    parts.pop();
+    return parts.join('/') || '.';
+  },
+  basename: (path, ext) => {
+    const name = path.split('/').pop() || '';
+    if (ext && name.endsWith(ext)) {
+      return name.slice(0, -ext.length);
+    }
+    return name;
+  },
+  extname: (path) => {
+    const base = path.split('/').pop() || '';
+    const dot = base.lastIndexOf('.');
+    if (dot === -1 || dot === 0) return '';
+    return base.substring(dot);
+  },
+  parse: (path) => {
+    const base = path.split('/').pop() || '';
+    const dot = base.lastIndexOf('.');
+    const ext = dot === -1 ? '' : base.substring(dot);
+    const name = dot === -1 ? base : base.substring(0, dot);
+    const dir = path.substring(0, path.length - base.length);
+    
+    return {
+      root: '',
+      dir,
+      base,
+      ext,
+      name
+    };
+  },
+  sep: '/'
+};
+
+// OS module with browser compatibility
+const os = {
+  platform: () => 'browser',
+  cpus: () => [{ model: 'Browser CPU' }],
+  homedir: () => '/',
+  type: () => 'Browser',
+  release: () => '1.0',
+  hostname: () => 'browser',
+  arch: () => 'browser',
+  EOL: '\n',
+  endianness: () => 'LE',
+  loadavg: () => [0, 0, 0],
+  freemem: () => 1024 * 1024 * 1024, // 1GB
+  totalmem: () => 4 * 1024 * 1024 * 1024, // 4GB
+  uptime: () => 3600 // 1 hour
+};
+
+// FS module mock with essential methods
+const fs = {
+  readFileSync: () => '',
+  existsSync: () => false,
+  writeFileSync: () => {},
+  statSync: () => ({
+    isDirectory: () => false,
+    isFile: () => true,
+    size: 0,
+    mtime: new Date()
+  }),
+  readdirSync: () => [],
+  mkdirSync: () => {},
+  unlinkSync: () => {},
+  createReadStream: () => ({}),
+  createWriteStream: () => ({
+    write: () => true,
+    end: () => {}
+  })
+};
+
+// Stream module mock
+const stream = {
+  Duplex: class Duplex {},
+  Readable: class Readable {
+    pipe() { return this; }
+    on() { return this; }
+  },
+  Writable: class Writable {
+    write() {}
+    end() {}
+  },
+  Transform: class Transform {
+    pipe() { return this; }
+  },
+  PassThrough: class PassThrough {}
+};
+
+// Net module mock
+const net = {
+  connect: () => ({
+    on: () => {},
+    write: () => {},
+    end: () => {},
+    setNoDelay: () => {},
+    setTimeout: () => {}
+  }),
+  Socket: class Socket {
+    connect() {}
+    on() {}
+    end() {}
+  },
+  createServer: () => ({
+    listen: () => {},
+    on: () => {}
+  })
+};
+
+// TLS module mock
+const tls = {
+  connect: () => ({
+    on: () => {},
+    write: () => {},
+    end: () => {}
+  }),
+  createServer: () => ({
+    listen: () => {},
+    on: () => {}
+  }),
+  TLSSocket: class TLSSocket {}
+};
+
+// Child_process module mock
+const child_process = {
+  spawn: () => ({
+    on: () => {},
+    stdout: { on: () => {} },
+    stderr: { on: () => {} }
+  }),
+  exec: (cmd, cb) => { if (cb) cb(null, '', ''); }
+};
+
+// URL module mock
+const url = {
+  parse: (urlStr) => {
     try {
-      // Specifying an encoding returns a string instead of a buffer
-      const parsed = DotenvModule.parse(fs.readFileSync(path, { encoding }));
-
-      DotenvModule.populate(parsedAll, parsed, options);
+      const u = new URL(urlStr);
+      return {
+        protocol: u.protocol,
+        hostname: u.hostname,
+        port: u.port,
+        pathname: u.pathname,
+        query: Object.fromEntries(u.searchParams),
+        hash: u.hash
+      };
     } catch (e) {
-      if (debug) {
-        _debug(`Failed to load ${path} ${e.message}`);
-      }
-      lastError = e;
+      return { protocol: '', hostname: '', port: '', pathname: urlStr, query: {}, hash: '' };
+    }
+  },
+  format: (urlObj) => {
+    return urlObj.protocol + '//' + urlObj.hostname + (urlObj.port ? ':' + urlObj.port : '') + urlObj.pathname;
+  },
+  resolve: (from, to) => {
+    try {
+      return new URL(to, from).toString();
+    } catch (e) {
+      return to;
     }
   }
-
-  let processEnv = process.env;
-  if (options && options.processEnv != null) {
-    processEnv = options.processEnv;
-  }
-
-  DotenvModule.populate(processEnv, parsedAll, options);
-
-  if (lastError) {
-    return { parsed: parsedAll, error: lastError }
-  } else {
-    return { parsed: parsedAll }
-  }
-}
-
-// Populates process.env from .env file
-function config (options) {
-  // fallback to original dotenv if DOTENV_KEY is not set
-  if (_dotenvKey(options).length === 0) {
-    return DotenvModule.configDotenv(options)
-  }
-
-  const vaultPath = _vaultPath(options);
-
-  // dotenvKey exists but .env.vault file does not exist
-  if (!vaultPath) {
-    _warn(`You set DOTENV_KEY but you are missing a .env.vault file at ${vaultPath}. Did you forget to build it?`);
-
-    return DotenvModule.configDotenv(options)
-  }
-
-  return DotenvModule._configVault(options)
-}
-
-function decrypt (encrypted, keyStr) {
-  const key = Buffer.from(keyStr.slice(-64), 'hex');
-  let ciphertext = Buffer.from(encrypted, 'base64');
-
-  const nonce = ciphertext.subarray(0, 12);
-  const authTag = ciphertext.subarray(-16);
-  ciphertext = ciphertext.subarray(12, -16);
-
-  try {
-    const aesgcm = crypto$1.createDecipheriv('aes-256-gcm', key, nonce);
-    aesgcm.setAuthTag(authTag);
-    return `${aesgcm.update(ciphertext)}${aesgcm.final()}`
-  } catch (error) {
-    const isRange = error instanceof RangeError;
-    const invalidKeyLength = error.message === 'Invalid key length';
-    const decryptionFailed = error.message === 'Unsupported state or unable to authenticate data';
-
-    if (isRange || invalidKeyLength) {
-      const err = new Error('INVALID_DOTENV_KEY: It must be 64 characters long (or more)');
-      err.code = 'INVALID_DOTENV_KEY';
-      throw err
-    } else if (decryptionFailed) {
-      const err = new Error('DECRYPTION_FAILED: Please check your DOTENV_KEY');
-      err.code = 'DECRYPTION_FAILED';
-      throw err
-    } else {
-      throw error
-    }
-  }
-}
-
-// Populate process.env with parsed values
-function populate (processEnv, parsed, options = {}) {
-  const debug = Boolean(options && options.debug);
-  const override = Boolean(options && options.override);
-
-  if (typeof parsed !== 'object') {
-    const err = new Error('OBJECT_REQUIRED: Please check the processEnv argument being passed to populate');
-    err.code = 'OBJECT_REQUIRED';
-    throw err
-  }
-
-  // Set process.env
-  for (const key of Object.keys(parsed)) {
-    if (Object.prototype.hasOwnProperty.call(processEnv, key)) {
-      if (override === true) {
-        processEnv[key] = parsed[key];
-      }
-
-      if (debug) {
-        if (override === true) {
-          _debug(`"${key}" is already defined and WAS overwritten`);
-        } else {
-          _debug(`"${key}" is already defined and was NOT overwritten`);
-        }
-      }
-    } else {
-      processEnv[key] = parsed[key];
-    }
-  }
-}
-
-const DotenvModule = {
-  configDotenv,
-  _configVault,
-  _parseVault,
-  config,
-  decrypt,
-  parse: parse$1,
-  populate
 };
 
-main$1.exports.configDotenv = DotenvModule.configDotenv;
-main$1.exports._configVault = DotenvModule._configVault;
-main$1.exports._parseVault = DotenvModule._parseVault;
-var config_1 = main$1.exports.config = DotenvModule.config;
-main$1.exports.decrypt = DotenvModule.decrypt;
-main$1.exports.parse = DotenvModule.parse;
-main$1.exports.populate = DotenvModule.populate;
-
-main$1.exports = DotenvModule;
+// Default export for CommonJS require()
+var crypto$2 = {
+  crypto: crypto$1,
+  path,
+  fs,
+  os,
+  stream,
+  net,
+  tls,
+  child_process,
+  url,
+  performance,
+  // Individual exports for path to support require('path').join style imports
+  join: path.join,
+  resolve: path.resolve,
+  dirname: path.dirname,
+  basename: path.basename,
+  extname: path.extname,
+  parse: path.parse,
+  // Individual exports for crypto
+  createHash: crypto$1.createHash,
+  randomBytes: crypto$1.randomBytes
+};
 
 const originCache = new Map()
     , originStackCache = new Map()
@@ -16493,7 +16266,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
     try {
       x = options.socket
         ? (await Promise.resolve(options.socket(options)))
-        : new crypto$3.Socket();
+        : new crypto$2.Socket();
     } catch (e) {
       error(e);
       return
@@ -16630,9 +16403,9 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
       return connected()
 
     socket.removeAllListeners();
-    socket = crypto$3.connect({
+    socket = crypto$2.connect({
       socket,
-      servername: crypto$3.isIP(socket.host) ? undefined : socket.host,
+      servername: crypto$2.isIP(socket.host) ? undefined : socket.host,
       ...(ssl === 'require' || ssl === 'allow' || ssl === 'prefer'
         ? { rejectUnauthorized: false }
         : ssl === 'verify-full'
@@ -17043,7 +16816,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
   }
 
   async function SASL() {
-    nonce = (await crypto$3.randomBytes(18)).toString('base64');
+    nonce = (await crypto$2.randomBytes(18)).toString('base64');
     b().p().str('SCRAM-SHA-256' + b.N);
     const i = b.i;
     write(b.inc(4).str('n,,n=*,r=' + nonce).i32(b.i - i - 4, i).end());
@@ -17052,7 +16825,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
   async function SASLContinue(x) {
     const res = x.toString('utf8', 9).split(',').reduce((acc, x) => (acc[x[0]] = x.slice(2), acc), {});
 
-    const saltedPassword = await crypto$3.pbkdf2Sync(
+    const saltedPassword = await crypto$2.pbkdf2Sync(
       await Pass(),
       Buffer.from(res.s, 'base64'),
       parseInt(res.i), 32,
@@ -17194,7 +16967,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
   }
 
   function CopyInResponse() {
-    stream = new crypto$3.Writable({
+    stream = new crypto$2.Writable({
       autoDestroy: true,
       write(chunk, encoding, callback) {
         socket.write(b().d().raw(chunk).end(), callback);
@@ -17213,7 +16986,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
   }
 
   function CopyOutResponse() {
-    stream = new crypto$3.Readable({
+    stream = new crypto$2.Readable({
       read() { socket.resume(); }
     });
     query.resolve(stream);
@@ -17221,7 +16994,7 @@ function Connection(options, queues = {}, { onopen = noop$2, onend = noop$2, onc
 
   /* c8 ignore next 3 */
   function CopyBothResponse() {
-    stream = new crypto$3.Duplex({
+    stream = new crypto$2.Duplex({
       autoDestroy: true,
       read() { socket.resume(); },
       /* c8 ignore next 11 */
@@ -17358,15 +17131,15 @@ function parseError(x) {
 }
 
 function md5(x) {
-  return crypto$3.createHash('md5').update(x).digest('hex')
+  return crypto$2.createHash('md5').update(x).digest('hex')
 }
 
 function hmac(key, x) {
-  return crypto$3.createHmac('sha256', key).update(x).digest()
+  return crypto$2.createHmac('sha256', key).update(x).digest()
 }
 
 function sha256(x) {
-  return crypto$3.createHash('sha256').update(x).digest()
+  return crypto$2.createHash('sha256').update(x).digest()
 }
 
 function xor(a, b) {
@@ -17717,7 +17490,7 @@ function largeObject(sql, oid, mode = 0x00020000 | 0x00040000) {
       } = {}) {
         let max = end - start;
         start && await lo.seek(start);
-        return new crypto$3.Readable({
+        return new crypto$2.Readable({
           highWaterMark,
           async read(size) {
             const l = size > max ? size - max : size;
@@ -17735,7 +17508,7 @@ function largeObject(sql, oid, mode = 0x00020000 | 0x00040000) {
         start = 0
       } = {}) {
         start && await lo.seek(start);
-        return new crypto$3.Writable({
+        return new crypto$2.Writable({
           highWaterMark,
           write(chunk, encoding, callback) {
             lo.write(chunk).then(() => callback(), callback);
@@ -17848,7 +17621,7 @@ function Postgres(a, b) {
     function file(path, args = [], options = {}) {
       arguments.length === 2 && !Array.isArray(args) && (options = args, args = []);
       const query = new Query([], args, (query) => {
-        crypto$3.readFile(path, 'utf8', (err, string) => {
+        crypto$2.readFile(path, 'utf8', (err, string) => {
           if (err)
             return query.reject(err)
 
@@ -18149,7 +17922,7 @@ function parseOptions(a, b) {
   if (a && a.shared)
     return a
 
-  const env = process.env // eslint-disable-line
+  const env = ({NODE_ENV:"production"}) // eslint-disable-line
       , o = (!a || typeof a === 'string' ? b : a) || {}
       , { url, multihost } = parseUrl(a)
       , query = [...url.searchParams].reduce((a, [b, c]) => (a[b] = c, a), {})
@@ -18277,7 +18050,7 @@ function parseUrl(url) {
 
 function osUsername() {
   try {
-    return crypto$3.userInfo().username // eslint-disable-line
+    return crypto$2.userInfo().username // eslint-disable-line
   } catch (_) {
     return process.env.USERNAME || process.env.USER || process.env.LOGNAME  // eslint-disable-line
   }
@@ -21341,8 +21114,8 @@ function drizzle(...params) {
   drizzle2.mock = mock;
 })(drizzle || (drizzle = {}));
 
-config_1({ path: ".env.local" });
-const client = Postgres(process.env.POSTGRES_URL);
+const connectionString = "postgres://postgres.ucecfqxpiyqnyycbizvx:Ja3rB9e5tTuQwVoH@aws-0-eu-central-1.pooler.supabase.com:5432/postgres?sslmode=require";
+const client = Postgres(connectionString);
 const db = drizzle(client);
 
 const transactionsTable = pgTable("transactions", {
@@ -26683,7 +26456,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
         let hash = null;
         if (chainName === "Ethereum") {
             if (token === "ETH") {
-                hash = yield writeContract(config$1, {
+                hash = yield writeContract(config, {
                     abi: ethVaultAbi$1,
                     address: "0x4b818386652f5Dd80406135d500BE404581e996e",
                     functionName: "buyTokenEthPay",
@@ -26695,7 +26468,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDT") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: ethTokenAbi,
                     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
                     functionName: "allowance",
@@ -26703,17 +26476,17 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 });
                 console.log("allowance", allowance, viem.parseUnits(amount.toString(), 6));
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 6))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: ethTokenAbi,
                         address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
                         functionName: "approve",
                         args: ["0x4b818386652f5Dd80406135d500BE404581e996e", viem.parseUnits(amount.toString(), 6)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: ethVaultAbi$1,
                             address: "0x4b818386652f5Dd80406135d500BE404581e996e",
                             functionName: "buyTokenEthPay",
@@ -26722,7 +26495,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: ethVaultAbi$1,
                         address: "0x4b818386652f5Dd80406135d500BE404581e996e",
                         functionName: "buyTokenEthPay",
@@ -26734,24 +26507,24 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDC") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: tokenAbi,
                     address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
                     functionName: "allowance",
                     args: [senderAddress, "0x4b818386652f5Dd80406135d500BE404581e996e"],
                 });
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 6))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: tokenAbi,
                         address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
                         functionName: "approve",
                         args: ["0x4b818386652f5Dd80406135d500BE404581e996e", viem.parseUnits(amount.toString(), 6)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: ethVaultAbi$1,
                             address: "0x4b818386652f5Dd80406135d500BE404581e996e",
                             functionName: "buyTokenEthPay",
@@ -26760,7 +26533,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: ethVaultAbi$1,
                         address: "0x4b818386652f5Dd80406135d500BE404581e996e",
                         functionName: "buyTokenEthPay",
@@ -26774,7 +26547,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
         }
         else if (chainName === "BNB Smart Chain") {
             if (token === "BNB") {
-                hash = yield writeContract(config$1, {
+                hash = yield writeContract(config, {
                     abi: bnbVaultAbi,
                     address: "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80",
                     functionName: "buyTokenBnbPay",
@@ -26786,24 +26559,24 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDT") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: tokenAbi,
                     address: "0x55d398326f99059fF775485246999027B3197955",
                     functionName: "allowance",
                     args: [senderAddress, "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80"],
                 });
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 18))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: tokenAbi,
                         address: "0x55d398326f99059fF775485246999027B3197955",
                         functionName: "approve",
                         args: ["0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80", viem.parseUnits(amount.toString(), 18)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: bnbVaultAbi,
                             address: "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80",
                             functionName: "buyTokenBnbPay",
@@ -26812,7 +26585,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: bnbVaultAbi,
                         address: "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80",
                         functionName: "buyTokenBnbPay",
@@ -26824,24 +26597,24 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDC") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: tokenAbi,
                     address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
                     functionName: "allowance",
                     args: [senderAddress, "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80"],
                 });
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 18))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: tokenAbi,
                         address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
                         functionName: "approve",
                         args: ["0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80", viem.parseUnits(amount.toString(), 18)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: bnbVaultAbi,
                             address: "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80",
                             functionName: "buyTokenBnbPay",
@@ -26850,7 +26623,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: bnbVaultAbi,
                         address: "0xb33263B7442c5bE789cA4bDF1988e20a1fb86e80",
                         functionName: "buyTokenBnbPay",
@@ -26864,7 +26637,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
         }
         else if (chainName === "Polygon") {
             if (token === "POL") {
-                hash = yield writeContract(config$1, {
+                hash = yield writeContract(config, {
                     abi: polVaultAbi$1,
                     address: "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11",
                     functionName: "buyTokenPolPay",
@@ -26876,24 +26649,24 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDT") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: tokenAbi,
                     address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
                     functionName: "allowance",
                     args: [senderAddress, "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11"],
                 });
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 6))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: tokenAbi,
                         address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
                         functionName: "approve",
                         args: ["0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11", viem.parseUnits(amount.toString(), 6)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: polVaultAbi$1,
                             address: "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11",
                             functionName: "buyTokenPolPay",
@@ -26902,7 +26675,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: polVaultAbi$1,
                         address: "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11",
                         functionName: "buyTokenPolPay",
@@ -26914,24 +26687,24 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                 }
             }
             else if (token === "USDC") {
-                const allowance = yield readContract(config$1, {
+                const allowance = yield readContract(config, {
                     abi: tokenAbi,
                     address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
                     functionName: "allowance",
                     args: [senderAddress, "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11"],
                 });
                 if (Number(allowance) < Number(viem.parseUnits(amount.toString(), 6))) {
-                    const hash1 = yield writeContract(config$1, {
+                    const hash1 = yield writeContract(config, {
                         abi: tokenAbi,
                         address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
                         functionName: "approve",
                         args: ["0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11", viem.parseUnits(amount.toString(), 6)],
                     });
-                    const transactionApproveReceipt = yield waitForTransactionReceipt(config$1, {
+                    const transactionApproveReceipt = yield waitForTransactionReceipt(config, {
                         hash: hash1,
                     });
                     if (transactionApproveReceipt.status == "success") {
-                        hash = yield writeContract(config$1, {
+                        hash = yield writeContract(config, {
                             abi: polVaultAbi$1,
                             address: "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11",
                             functionName: "buyTokenPolPay",
@@ -26940,7 +26713,7 @@ const sendPayment = (_a) => __awaiter$8(void 0, [_a], void 0, function* ({ token
                     }
                 }
                 else {
-                    hash = yield writeContract(config$1, {
+                    hash = yield writeContract(config, {
                         abi: polVaultAbi$1,
                         address: "0x2431e5F353daed3b6553E7C7A1FBebaBd8Db4b11",
                         functionName: "buyTokenPolPay",
@@ -27298,7 +27071,7 @@ const ReferralPopup = ({ onClose }) => {
             yield axios$1.post(`${BACKEND_ENDPOINT$1}/user/setReferral`, { walletAddress, referral });
         });
         if (address) {
-            const referral = 'GARA-' + crypto$3.createHash("sha256").update(address).digest("hex").slice(0, 8).toUpperCase();
+            const referral = 'GARA-' + crypto$2.createHash("sha256").update(address).digest("hex").slice(0, 8).toUpperCase();
             setReferralCode(referral);
             setReferral(address, referral);
         }
