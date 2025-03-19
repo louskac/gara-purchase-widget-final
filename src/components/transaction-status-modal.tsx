@@ -16,14 +16,12 @@ import { ArrowDownRight, ArrowUpRight, Check, ExternalLink, Loader2Icon, X } fro
 import { useGaraStore } from "../lib/store/provider"
 import { Skeleton } from "./ui/skeleton"
 import { formatAddress } from "../utils/utils"
-import { useRouter } from "next/navigation"
 
 export default function TransactionStatusModal({ open, setOpen, toggleOpen, senderChainTxUrl }) {
   const { transactionStatus, incomingTransaction, outcomingTransaction, reset } = useGaraStore((state) => state)
   const hasFinished = outcomingTransaction.done && !outcomingTransaction.error
   const isPending = !hasFinished && (!incomingTransaction.done || !outcomingTransaction.done);
   const hasFailed = incomingTransaction.error || outcomingTransaction.error
-  const router = useRouter()
 
     // Save purchase status to local storage when the transaction finishes successfully
     useEffect(() => {

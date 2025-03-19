@@ -3,7 +3,19 @@ import { FC, ReactNode } from 'react';
 // Component interfaces
 interface BuyGaraProps {
   hideHeader?: boolean;
+  className?: string;
+  onTransactionSuccess?: ((data: TransactionData) => void) | null;
   [key: string]: any;
+}
+
+// Define the transaction data structure for better type safety
+interface TransactionData {
+  tokenAmount: string;
+  tokenPrice: number;
+  paymentToken: string;
+  paymentAmount: string;
+  timestamp: string;
+  txHash: string;
 }
 
 // Component exports

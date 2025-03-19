@@ -27,7 +27,6 @@ import { CurrencySelect } from "./currency-select"
 import { getTokenBalance } from "../lib/get-balance"
 import CountdownTimer from "./countdown-timer"
 import ProgressBar from 'modified-react-progress-bar.git/@ramonak/react-progress-bar'
-import { useRouter } from "next/navigation";
 
 import { useSwitchChain } from "wagmi"
 import { mainnet, polygon, bsc } from "@wagmi/core/chains"
@@ -1045,15 +1044,11 @@ const BACKEND_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT
 export function BuyGara({ 
   className, 
   hideHeader = false, 
-  onTransactionSuccess = null, 
-  thankYouRedirectPath = "/en/thank-you", 
-  storeDataKey = "gara-transaction-data" 
+  onTransactionSuccess = null // Add this prop
 }: {
   className?: string; 
   hideHeader?: boolean;
-  onTransactionSuccess?: ((data: any) => void) | null;
-  thankYouRedirectPath?: string | null;
-  storeDataKey?: string;
+  onTransactionSuccess?: ((data: any) => void) | null; // Add this type
 }) {
   const [currentNetworkId, setCurrentNetworkId] = useState(1);
   const [hasFetchedOnLoad, setHasFetchedOnLoad] = useState(false);
@@ -2091,9 +2086,12 @@ export function BuyGara({
     // Check if the transaction has been completed successfully
     if (transactionStatus.process === "receivePayment" && transactionStatus.status === "paymentSent") {
       // Get transaction information from the store
-      const { outcomingTransaction, incomingTransaction } = useGaraStore.getState();
+      const { outcomingTransaction, incomingTransaction } = useGaraStore(state => ({
+        outcomingTransaction: state.outcomingTransaction,
+        incomingTransaction: state.incomingTransaction
+      }));
       
-      // Store transaction data in localStorage
+      // Store transaction data for callback
       const transactionData = {
         tokenAmount: garaEstimate,
         tokenPrice: currentPrice,
@@ -2103,12 +2101,6 @@ export function BuyGara({
         txHash: outcomingTransaction.txHash
       };
       
-      // Save purchase data to localStorage
-      localStorage.setItem(storeDataKey, JSON.stringify(transactionData));
-      localStorage.setItem("tokenPurchased", "true");
-      localStorage.setItem("gara-amount", garaEstimate);
-      localStorage.setItem("gara-usd-value", (parseFloat(garaEstimate) * currentPrice).toFixed(2));
-  
       // Fire analytics events if available
       if (typeof gtag === "function") {
         gtag('event', 'conversion', {
@@ -2123,16 +2115,9 @@ export function BuyGara({
       if (onTransactionSuccess) {
         onTransactionSuccess(transactionData);
       }
-      
-      // Handle redirect if path is provided
-      if (thankYouRedirectPath) {
-        setTimeout(() => {
-          router.push(thankYouRedirectPath);
-        }, 1000);
-      }
     }
-  }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess, thankYouRedirectPath, storeDataKey]);
-
+  }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess]);
+  
   return (
     <section
       id="buy-gara"

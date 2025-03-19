@@ -12,7 +12,6 @@ import { useId } from '@radix-ui/react-id';
 import { composeRefs } from '@radix-ui/react-compose-refs';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { useAccount, createStorage, cookieStorage, WagmiProvider, useSwitchChain, useBalance, useWalletClient, useWriteContract } from 'wagmi';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { metaMaskWallet, rainbowWallet, walletConnectWallet, coinbaseWallet, phantomWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets';
 import { polygon as polygon$1, mainnet as mainnet$1, bsc as bsc$1 } from 'wagmi/chains';
 import { z } from 'zod';
@@ -22,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { readContract as readContract$1, waitForTransactionReceipt as waitForTransactionReceipt$1, getTransaction, call, writeContract as writeContract$1 } from 'viem/actions';
 import { parseAccount, getAddress } from 'viem/utils';
+import { useSearchParams } from 'next/navigation';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4417,7 +4417,6 @@ function TransactionStatusModal({ open, setOpen, toggleOpen, senderChainTxUrl })
     const hasFinished = outcomingTransaction.done && !outcomingTransaction.error;
     const isPending = !hasFinished && (!incomingTransaction.done || !outcomingTransaction.done);
     const hasFailed = incomingTransaction.error || outcomingTransaction.error;
-    useRouter();
     // Save purchase status to local storage when the transaction finishes successfully
     useEffect(() => {
         if (hasFinished) {
@@ -28095,7 +28094,8 @@ const calculateRound = () => {
     }
 };
 const BACKEND_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT;
-function BuyGara({ className, hideHeader = false, onTransactionSuccess = null, thankYouRedirectPath = "/en/thank-you", storeDataKey = "gara-transaction-data" }) {
+function BuyGara({ className, hideHeader = false, onTransactionSuccess = null // Add this prop
+ }) {
     var _a, _b;
     const [currentNetworkId, setCurrentNetworkId] = useState(1);
     const [hasFetchedOnLoad, setHasFetchedOnLoad] = useState(false);
@@ -28903,8 +28903,11 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null, t
         // Check if the transaction has been completed successfully
         if (transactionStatus.process === "receivePayment" && transactionStatus.status === "paymentSent") {
             // Get transaction information from the store
-            const { outcomingTransaction, incomingTransaction } = useGaraStore.getState();
-            // Store transaction data in localStorage
+            const { outcomingTransaction, incomingTransaction } = useGaraStore(state => ({
+                outcomingTransaction: state.outcomingTransaction,
+                incomingTransaction: state.incomingTransaction
+            }));
+            // Store transaction data for callback
             const transactionData = {
                 tokenAmount: garaEstimate,
                 tokenPrice: currentPrice,
@@ -28913,11 +28916,6 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null, t
                 timestamp: new Date().toISOString(),
                 txHash: outcomingTransaction.txHash
             };
-            // Save purchase data to localStorage
-            localStorage.setItem(storeDataKey, JSON.stringify(transactionData));
-            localStorage.setItem("tokenPurchased", "true");
-            localStorage.setItem("gara-amount", garaEstimate);
-            localStorage.setItem("gara-usd-value", (parseFloat(garaEstimate) * currentPrice).toFixed(2));
             // Fire analytics events if available
             if (typeof gtag === "function") {
                 gtag('event', 'conversion', {
@@ -28931,14 +28929,8 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null, t
             if (onTransactionSuccess) {
                 onTransactionSuccess(transactionData);
             }
-            // Handle redirect if path is provided
-            if (thankYouRedirectPath) {
-                setTimeout(() => {
-                    router.push(thankYouRedirectPath);
-                }, 1000);
-            }
         }
-    }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess, thankYouRedirectPath, storeDataKey]);
+    }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess]);
     return (jsxs("section", { id: "buy-gara", className: cn("relative mb-20 w-full max-w-[420px] flex-1 rounded-2xl bg-white p-6 px-5 shadow-md lg:rounded-t-2xl lg:ml-auto", className), children: [jsxs("div", { className: "mt-4 grid grid-cols-[1fr_280px_1fr] gap-2", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) }), jsx("p", { className: "text-center font-heading text-xl font-black", children: "Countdown to Price Increase" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) })] }), jsx("div", { className: "my-4 flex flex-row justify-center", children: jsx(CountdownTimer, {}) }), jsxs("div", { className: "flex flex-col items-center justify-between rounded-md p-4", children: [jsxs("div", { className: "flex w-full justify-between text-lg text-gray-800", children: [jsxs("span", { children: ["Current Price: ", jsxs("span", { className: "font-bold text-[#28E0B9]", children: ["$", currentPrice.toFixed(2)] })] }), jsxs("span", { children: ["Listing price: ", jsx("span", { className: "font-bold text-gray-900", children: "$0.36" })] })] }), jsx("div", { className: "relative my-2 w-full", children: jsx(ProgressBar, { completed: ((tokenSold / 1000000) * 100).toFixed(2), animateOnRender: true, isLabelVisible: false, height: "16px", bgColor: "#28E0B9", baseBgColor: "#0D1E35", borderRadius: "20px", className: "" }) }), jsxs("p", { className: "text-center text-lg text-gray-800", children: ["Raised: ", jsxs("span", { className: "font-black text-gray-900", children: ["$", new Intl.NumberFormat("en-US").format(tokenSold)] }), " ", "/ $1,000,000"] })] }), jsxs("div", { className: "mt-4 grid grid-cols-[1fr_220px_1fr] gap-2 lg:hidden", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) }), jsx("p", { className: "text-center font-heading text-lg", children: "Presale payment methods" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) })] }), jsxs("div", { className: "mt-4 flex flex-row items-center justify-between gap-2", children: [jsxs("button", { onClick: () => handleNetworkSwitch("ethereum"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "ethereum" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/ethereum.png", alt: "Ethereum", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "ethereum" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "Ethereum" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "ETH" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("polygon"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "polygon" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/pol.png", alt: "Polygon", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "polygon" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "Polygon" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "POL" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("bsc"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "bsc" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/bsc.png", alt: "BSC", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "bsc" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "BSC" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "BSC" })] })] })] }), jsxs("form", { onSubmit: handleSubmit(onSubmit), className: "w-full max-w-full mb-4", children: [jsxs("div", { className: "mt-8 grid grid-cols-1 md:grid-cols-2 gap-4", children: [jsxs("div", { className: "flex flex-col relative w-full", children: [jsx("p", { className: "font-black", children: "Pay with your choice" }), jsx(CoinInput, Object.assign({ coin: token || "USDC", type: "number", placeholder: "0.000" }, register("amount", { required: "Amount is required" }), { onChange: handleSourceAmountChange, onBlur: handleSourceAmountBlur, showIcon: false, className: "w-full", value: amount })), jsx("div", { className: "absolute -right-2 top-2/3 transform -translate-y-1/2", children: jsx(CurrencySelect, { form: form, currentNetworkId: currentNetworkId }) })] }), jsxs("div", { className: "flex flex-col w-full", children: [jsx("p", { className: "font-black", children: "Receive $GARA" }), jsx(CoinInput, Object.assign({ coin: "GARA", type: "number", placeholder: "0.000" }, register("garaEstimate", { required: "GARA amount is required" }), { onChange: handleGaraAmountChange, onBlur: handleGaraAmountBlur, className: "w-full", value: garaEstimate }))] })] }), jsx("input", Object.assign({ type: "hidden" }, register("from"))), jsx("input", Object.assign({ type: "hidden" }, register("to"))), jsx("input", { type: "hidden", name: "chain", value: chain === null || chain === void 0 ? void 0 : chain.name }), jsxs("div", { className: "my-4 grid grid-cols-5 gap-2", children: [[50, 100, 500, 1000].map((value) => (jsx("button", { className: "group flex flex-1 items-center justify-center rounded-full border-0 bg-[#FFEEDC] p-2 font-black hover:bg-[#024365] hover:text-white", onClick: (e) => {
                                     e.preventDefault();
                                     setIsConverting(true);
