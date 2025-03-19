@@ -8,6 +8,7 @@ import replace from '@rollup/plugin-replace';
 import alias from '@rollup/plugin-alias';
 import { fileURLToPath } from 'url';
 import { dirname, resolve as pathResolve } from 'path';
+import dts from 'rollup-plugin-dts'; // Make sure this is imported
 
 // ES Module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -89,5 +90,15 @@ export default [
       '@radix-ui/react-slot',
       /^@radix-ui\/.*/
     ],
+  },
+  // Add a second configuration for declaration files
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'dist/index.d.ts',
+      format: 'es'
+    },
+    plugins: [dts()],
+    external: [/\.css$/]
   }
 ];
