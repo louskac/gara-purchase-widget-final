@@ -40,6 +40,7 @@ export * from './types';
 
 // Store export
 export const useGaraStore: any;
+export const GaraStoreProvider: FC<{ children: ReactNode }>; // Added this line
 
 // Theme utility
 export interface WidgetThemeConfig {

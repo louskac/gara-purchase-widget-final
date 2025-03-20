@@ -77,5 +77,11 @@
     "react-number-format": "^5.4.3",
     "tailwind-merge": "^2.5.3",
     "zustand": "^5.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "18.3.1",
+      "react-dom": "18.3.1"
+    }
   }
 }

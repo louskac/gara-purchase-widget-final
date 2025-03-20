@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 type HexAddress = `0x${string}`;
 /**
@@ -50,6 +50,7 @@ declare function usdcToGara(amount: number): number;
 
 // Store export
 declare const useGaraStore: any;
+declare const GaraStoreProvider: FC<{ children: ReactNode }>; // Added this line
 
 // Theme utility
 interface WidgetThemeConfig {
@@ -60,4 +61,4 @@ interface WidgetThemeConfig {
 
 declare function createWidgetTheme(config: WidgetThemeConfig): WidgetThemeConfig;
 
-export { BigNumberish, BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, HexAddress, Numeric, SupportedChains, SupportedTokens, TransactionStatusModal, WalletProviders, WidgetThemeConfig, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };
+export { BigNumberish, BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, HexAddress, Numeric, SupportedChains, SupportedTokens, TransactionStatusModal, WalletProviders, WidgetThemeConfig, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };

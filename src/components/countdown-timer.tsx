@@ -88,28 +88,28 @@ const CountdownTimer = ({ className }: { className?: string }) => {
     <div className={cn("flex w-full items-center justify-center space-x-2", className)}>
       <div className="flex w-full flex-col items-center rounded-xl bg-gary-blue p-2 font-heading shadow-md">
         <div className="text-3xl font-bold text-gary-yellow">{String(timeLeft.days).padStart(2, "0")}</div>
-        <div className="text-xs text-white">{t("day")}</div>
+        <div className="text-xs text-white">DAYS</div>
       </div>
 
       <div className="text-xl font-bold text-secondary">:</div>
 
       <div className="flex w-full flex-col items-center rounded-xl bg-gary-blue p-2 font-heading shadow-md">
         <div className="text-3xl font-bold text-gary-yellow">{String(timeLeft.hours).padStart(2, "0")}</div>
-        <div className="text-xs text-white">{t("hours")}</div>
+        <div className="text-xs text-white">HOURS</div>
       </div>
 
       <div className="text-xl font-bold text-secondary">:</div>
 
       <div className="flex w-full flex-col items-center rounded-xl bg-gary-blue p-2 font-heading shadow-md">
         <div className="text-3xl font-bold text-gary-yellow">{String(timeLeft.minutes).padStart(2, "0")}</div>
-        <div className="text-xs text-white">{t("minutes")}</div>
+        <div className="text-xs text-white">MINUTES</div>
       </div>
 
       <div className="text-xl font-bold text-secondary">:</div>
 
       <div className="flex w-full flex-col items-center rounded-xl bg-gary-blue p-2 font-heading shadow-md">
         <div className="text-3xl font-bold text-gary-yellow">{String(timeLeft.seconds).padStart(2, "0")}</div>
-        <div className="text-xs text-white">{t("seconds")}</div>
+        <div className="text-xs text-white">SECONDS</div>
       </div>
     </div>
   )
