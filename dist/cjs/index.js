@@ -28776,6 +28776,7 @@ exports.CoinInput = CoinInput;
 exports.ConnectButton = ConnectButton;
 exports.CountdownTimer = CountdownTimer;
 exports.CurrencySelect = CurrencySelect;
+exports.GaraStoreProvider = GaraStoreProvider;
 exports.TransactionStatusModal = TransactionStatusModal;
 exports.WalletProviders = WalletProviders;
 exports.cn = cn;

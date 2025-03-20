@@ -9,7 +9,7 @@ export { sendPayment } from './lib/send-payment';
 export { getTokenBalance } from './lib/get-balance';
 export { cn, formatAmount, getGaraEstimate, usdcToGara } from './utils/utils';
 export * from './types';
-export { useGaraStore } from './lib/store/provider';
+export { GaraStoreProvider, useGaraStore } from './lib/store/provider';
 export declare const createWidgetTheme: (config: {
     primaryColor: string;
     secondaryColor: string;

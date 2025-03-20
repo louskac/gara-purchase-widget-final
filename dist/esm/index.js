@@ -28749,5 +28749,5 @@ var browser$2 = /*#__PURE__*/Object.freeze({
     default: browser$1
 });
 
-export { BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, TransactionStatusModal, WalletProviders, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };
+export { BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, TransactionStatusModal, WalletProviders, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };
 //# sourceMappingURL=index.js.map

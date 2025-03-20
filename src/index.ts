@@ -16,7 +16,7 @@ export { cn, formatAmount, getGaraEstimate, usdcToGara } from './utils/utils';
 export * from './types';
 
 // Export store
-export { useGaraStore } from './lib/store/provider';
+export { GaraStoreProvider, useGaraStore } from './lib/store/provider';
 
 // Export theme utilities
 export const createWidgetTheme = (config: {
