@@ -1414,6 +1414,7 @@ export function BuyGara({
   const addRecentTransaction = useAddRecentTransaction()
   const { writeContract } = useWriteContract()
   const { openChainModal } = useChainModal()
+  const { sendTransaction } = useSendTransaction()
   const chainTxUrl = `${chain?.blockExplorers?.default?.url}/tx/`
 
   const { register, control, handleSubmit, setValue, watch, reset, formState: { errors } } = form;

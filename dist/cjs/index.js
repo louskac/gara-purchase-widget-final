@@ -28135,6 +28135,7 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null //
     const addRecentTransaction = rainbowkit.useAddRecentTransaction();
     const { writeContract } = wagmi.useWriteContract();
     const { openChainModal } = rainbowkit.useChainModal();
+    const { sendTransaction } = wagmi.useSendTransaction();
     const chainTxUrl = `${(_b = (_a = chain === null || chain === void 0 ? void 0 : chain.blockExplorers) === null || _a === void 0 ? void 0 : _a.default) === null || _b === void 0 ? void 0 : _b.url}/tx/`;
     const { register, control, handleSubmit, setValue, watch, reset, formState: { errors } } = form;
     const amount = reactHookForm.useWatch({ control: form.control, name: "amount" });

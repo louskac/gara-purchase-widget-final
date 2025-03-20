@@ -11,7 +11,7 @@ import { Primitive } from '@radix-ui/react-primitive';
 import { useId } from '@radix-ui/react-id';
 import { composeRefs } from '@radix-ui/react-compose-refs';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { useAccount, createStorage, cookieStorage, WagmiProvider, useSwitchChain, useBalance, useWalletClient, useWriteContract } from 'wagmi';
+import { useAccount, createStorage, cookieStorage, WagmiProvider, useSwitchChain, useBalance, useWalletClient, useWriteContract, useSendTransaction } from 'wagmi';
 import { metaMaskWallet, rainbowWallet, walletConnectWallet, coinbaseWallet, phantomWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets';
 import { polygon as polygon$1, mainnet as mainnet$1, bsc as bsc$1 } from 'wagmi/chains';
 import { z } from 'zod';
@@ -28113,6 +28113,7 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null //
     const addRecentTransaction = useAddRecentTransaction();
     const { writeContract } = useWriteContract();
     const { openChainModal } = useChainModal();
+    const { sendTransaction } = useSendTransaction();
     const chainTxUrl = `${(_b = (_a = chain === null || chain === void 0 ? void 0 : chain.blockExplorers) === null || _a === void 0 ? void 0 : _a.default) === null || _b === void 0 ? void 0 : _b.url}/tx/`;
     const { register, control, handleSubmit, setValue, watch, reset, formState: { errors } } = form;
     const amount = useWatch({ control: form.control, name: "amount" });
