@@ -2224,7 +2224,7 @@ export function BuyGara({
               }}
             >
               <Image
-                src="../../assets/ethereum.png"
+                src="/assets/ethereum.png"
                 alt="Ethereum"
                 width={24}
                 height={24}
@@ -2250,7 +2250,7 @@ export function BuyGara({
               }}
             >
               <Image
-                src="../../assets/pol.png"
+                src="/assets/pol.png"
                 alt="Polygon"
                 width={24}
                 height={24}
@@ -2276,7 +2276,7 @@ export function BuyGara({
               }}
             >
               <Image
-                src="../../assets/bsc.png"
+                src="/assets/bsc.png"
                 alt="BSC"
                 width={24}
                 height={24}
@@ -2462,7 +2462,7 @@ export function BuyGara({
           
           {mergedTheme.backgroundColor === '#FFFFFF' && (
             <div className="absolute -bottom-[calc(50%+32px)] right-0 z-10 w-full h-full pointer-events-none">
-              <Image src="../../assets/ice_buy_gara.svg" fill alt="Ice Background" className="object-contain" />
+              <Image src="/assets/ice_buy_gara.svg" fill alt="Ice Background" className="object-contain" />
             </div>
           )}
         </section> 
