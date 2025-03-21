@@ -1414,7 +1414,7 @@ export function BuyGara({
   const addRecentTransaction = useAddRecentTransaction()
   const { writeContract } = useWriteContract()
   const { openChainModal } = useChainModal()
-  const { sendTransaction } = useSendTransaction()
+  
   const chainTxUrl = `${chain?.blockExplorers?.default?.url}/tx/`
 
   const { register, control, handleSubmit, setValue, watch, reset, formState: { errors } } = form;
@@ -1670,10 +1670,8 @@ export function BuyGara({
   const [garaInputCursor, setGaraInputCursor] = useState(null);
   const isCalculatingRef = useRef(false);
 
-  // Update the input handlers to set the input values and mark that we're editing
+  // Input change handlers
   const handleSourceAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleSourceAmountChange');
-    
     if (isConverting || isCalculatingRef.current) return;
     
     // Get input value and save cursor position
@@ -1687,10 +1685,8 @@ export function BuyGara({
     // Save cursor position for restoration
     setSourceInputCursor(cursorPosition);
   };
-  
+
   const handleGaraAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleGaraAmountChange');
-    
     if (isConverting || isCalculatingRef.current) return;
     
     // Get input value and save cursor position
@@ -1705,13 +1701,11 @@ export function BuyGara({
     setGaraInputCursor(cursorPosition);
   };
 
-  // Add handlers for when users complete editing (blur events)
+  // Blur handlers for minimum value enforcement
   const handleSourceAmountBlur = () => {
-    console.log('handleSourceAmountBlur');
     setIsEditing(false);
-    console.log("Source blur - checking minimum value");
     
-    // Now apply minimum value enforcement
+    // Apply minimum value enforcement
     if (amount && token && nativeUSD) {
       const parsedAmount = parseFloat(amount);
       
@@ -1720,16 +1714,11 @@ export function BuyGara({
         ? 20 // $20 minimum for stablecoins
         : 20 / (nativeUSD / 10); // Convert for non-stablecoins
       
-      console.log(`Current amount: ${parsedAmount} ${token}`);
-      console.log(`Minimum required: ${minTokenValue.toFixed(5)} ${token}`);
-      console.log(`Below minimum: ${parsedAmount < minTokenValue}`);
-      
       // Check if below minimum before enforcing
       const isBelowMinimum = parsedAmount < minTokenValue;
       
-      // Apply enforcement (replace input with minimum value if too low)
+      // Apply enforcement if needed
       if (isBelowMinimum) {
-        console.log(`Enforcing minimum value: ${minTokenValue.toFixed(5)} ${token}`);
         setValue("amount", minTokenValue.toFixed(5), { shouldValidate: true });
         
         // Calculate GARA based on the enforced amount
@@ -1744,13 +1733,11 @@ export function BuyGara({
       setMinTokenBalance(minTokenValue);
     }
   };
-  
+
   const handleGaraAmountBlur = () => {
-    console.log('handleGaraAmountBlur');
     setIsEditing(false);
-    console.log("GARA blur - checking minimum value");
     
-    // Now apply minimum value enforcement
+    // Apply minimum value enforcement
     if (garaEstimate && token && nativeUSD) {
       const parsedGara = parseFloat(garaEstimate);
       const price = getCurrentPrice();
@@ -1761,30 +1748,16 @@ export function BuyGara({
       // Calculate the minimum GARA value
       const minGaraValue = 20 / price; // $20 divided by GARA price
       
-      console.log(`Current GARA: ${parsedGara}`);
-      console.log(`USD value: $${usdValue.toFixed(2)}`);
-      console.log(`Minimum GARA required: ${minGaraValue.toFixed(5)}`);
-      console.log(`Below minimum: ${usdValue < 20}`);
-      
       // Check if below minimum before enforcing
       const isBelowMinimum = usdValue < 20;
       
-      // Apply enforcement (replace input with minimum value if too low)
+      // Apply enforcement if needed
       if (isBelowMinimum) {
-        console.log(`Enforcing minimum GARA: ${minGaraValue.toFixed(5)}`);
         setValue("garaEstimate", minGaraValue.toFixed(5), { shouldValidate: true });
         
         // Calculate amount based on the enforced GARA
         const newAmount = calculateSourceFromGara(minGaraValue.toFixed(5));
         setValue("amount", newAmount);
-        
-        // Calculate the minimum token balance for the error message
-        const minTokenValue = token === "USDT" || token === "USDC" 
-          ? 20 
-          : 20 / (nativeUSD / 10);
-        
-        // Set the minimum token balance for reference in the error message
-        setMinTokenBalance(minTokenValue);
       }
       
       // Show error message if minimum was enforced
@@ -1894,28 +1867,25 @@ export function BuyGara({
 
   const currentPrice = getCurrentPrice();
 
-  // Effect to handle bidirectional updates
+  // Add the bidirectional update effect
   useEffect(() => {
-    console.log('Bidirectional input useEffect')
-    // Add a flag variable to track if an update is in progress
-    let isUpdateInProgress = false;
-    
-    // First, check all conditions that would prevent updates
-    if (isEditing || isConverting || !token || !nativeUSD) {
+    // Check conditions that would prevent updates
+    if (isEditing || isConverting || !token || !nativeUSD || isCalculatingRef.current) {
       return;
     }
     
     const updateFields = debounce(() => {
+      // Return early if already calculating
+      if (isCalculatingRef.current) return;
+      
       // Set the flag to prevent re-entry
-      if (isUpdateInProgress) return;
-      isUpdateInProgress = true;
+      isCalculatingRef.current = true;
       
       try {
         // Get current price
         const price = getCurrentPrice();
         
         if (activeInput === "source" && amount) {
-          console.log("Bidirectional update - source to GARA");
           // Calculate GARA based on the current amount
           const newGaraEstimate = calculateGaraFromSource(amount);
           
@@ -1942,7 +1912,6 @@ export function BuyGara({
           }
           
         } else if (activeInput === "gara" && garaEstimate) {
-          console.log("Bidirectional update - GARA to source");
           // Calculate amount based on the current GARA
           const newAmount = calculateSourceFromGara(garaEstimate);
           
@@ -1969,19 +1938,47 @@ export function BuyGara({
           }
         }
       } finally {
-        // Always reset the flag
-        isUpdateInProgress = false;
+        // Set a timeout to reset the flag after a delay
+        setTimeout(() => {
+          isCalculatingRef.current = false;
+        }, 100);
       }
-    }, 500); // Increase debounce time for more stability
+    }, 500);
     
     updateFields();
     
     return () => {
-      updateFields.cancel();  // Properly cancel the debounce
+      updateFields.cancel();
     };
   }, [amount, garaEstimate, token, nativeUSD, activeInput]);
-  
 
+  // Add cursor position restoration effects
+  useEffect(() => {
+    if (sourceInputCursor !== null) {
+      // Find the input element
+      const inputElement = document.querySelector('input[name="amount"]');
+      if (inputElement) {
+        // Restore cursor position
+        (inputElement as HTMLInputElement).setSelectionRange(sourceInputCursor, sourceInputCursor);
+      }
+      // Reset the saved position
+      setSourceInputCursor(null);
+    }
+  }, [amount, sourceInputCursor]);
+
+  useEffect(() => {
+    if (garaInputCursor !== null) {
+      // Find the input element
+      const inputElement = document.querySelector('input[name="garaEstimate"]');
+      if (inputElement) {
+        // Restore cursor position
+        (inputElement as HTMLInputElement).setSelectionRange(garaInputCursor, garaInputCursor);
+      }
+      // Reset the saved position
+      setGaraInputCursor(null);
+    }
+  }, [garaEstimate, garaInputCursor]);
+  
   // Handle token or network change
   useEffect(() => {
     console.log('handling token or network change');
