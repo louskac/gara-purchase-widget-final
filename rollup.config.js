@@ -9,6 +9,7 @@ import alias from '@rollup/plugin-alias';
 import { fileURLToPath } from 'url';
 import { dirname, resolve as pathResolve } from 'path';
 import dts from 'rollup-plugin-dts';
+import copy from 'rollup-plugin-copy'; // Add this import
 
 // ES Module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -95,6 +96,12 @@ export default [
         noEmit: false,
         noEmitOnError: false
       }),
+      // Add this plugin to copy assets
+      copy({
+        targets: [
+          { src: 'src/assets/*', dest: 'dist/assets' }
+        ]
+      })
     ],
     external: [
       'react', 

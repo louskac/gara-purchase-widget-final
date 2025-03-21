@@ -5,6 +5,7 @@ interface BuyGaraProps {
   hideHeader?: boolean;
   className?: string;
   onTransactionSuccess?: ((data: TransactionData) => void) | null;
+  theme?: Partial<GaraWidgetThemeConfig>; // Add theme prop
   [key: string]: any;
 }
 
@@ -40,13 +41,43 @@ export * from './types';
 
 // Store export
 export const useGaraStore: any;
-export const GaraStoreProvider: FC<{ children: ReactNode }>; // Added this line
+export const GaraStoreProvider: FC<{ children: ReactNode }>;
 
-// Theme utility
-export interface WidgetThemeConfig {
+// Theme exports
+export interface GaraWidgetThemeConfig {
   primaryColor: string;
   secondaryColor: string;
-  [key: string]: any;
+  backgroundColor: string;
+  textColor: string;
+  borderRadius: string;
+  progressBar?: {
+    backgroundColor: string;
+    fillColor: string;
+  };
+  networkButtons?: {
+    activeBackgroundColor: string;
+    inactiveBackgroundColor: string;
+    activeTextColor: string;
+    inactiveTextColor: string;
+  };
+  inputFields?: {
+    backgroundColor: string;
+    textColor: string;
+    borderColor: string;
+  };
+  connectButton?: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  buyButton?: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  showBackgroundImage?: boolean;
 }
 
-export function createWidgetTheme(config: WidgetThemeConfig): WidgetThemeConfig;
+export const defaultTheme: GaraWidgetThemeConfig;
+export const darkTheme: GaraWidgetThemeConfig;
+export function createWidgetTheme(config: Partial<GaraWidgetThemeConfig>): GaraWidgetThemeConfig;
+export const ThemeProvider: FC<{ theme?: Partial<GaraWidgetThemeConfig>, children: ReactNode }>;
+export function useTheme(): { theme: GaraWidgetThemeConfig };

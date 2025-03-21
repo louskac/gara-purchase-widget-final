@@ -37,6 +37,8 @@ import axios from "axios"
 
 import { GaraStoreProvider } from "../lib/store/provider"
 
+import { ThemeProvider, useTheme, GaraWidgetThemeConfig } from '../lib/theme/context';
+
 const COINGARAGE_CONTRACT_ADDRESS = "0xb523aBD0732a3208670ffceaF61eAbf7672a7402" as `0x${string}`
 const TOKENS_SOLD = 652163
 
@@ -1046,11 +1048,13 @@ const BACKEND_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT
 export function BuyGara({ 
   className, 
   hideHeader = false, 
-  onTransactionSuccess = null // Add this prop
+  onTransactionSuccess = null,
+  theme = {} // Add theme prop
 }: {
   className?: string; 
   hideHeader?: boolean;
-  onTransactionSuccess?: ((data: any) => void) | null; // Add this type
+  onTransactionSuccess?: ((data: any) => void) | null;
+  theme?: Partial<GaraWidgetThemeConfig>; // Add this type
 }) {
   const [currentNetworkId, setCurrentNetworkId] = useState(1);
   const [hasFetchedOnLoad, setHasFetchedOnLoad] = useState(false);
@@ -1066,6 +1070,12 @@ export function BuyGara({
 
   const searchParams = useSearchParams()
   const { address, chain } = useAccount()
+
+  // Theme from context
+  const { theme: contextTheme } = useTheme();
+  
+  // Theme prop with context theme
+  const mergedTheme = { ...contextTheme, ...theme };
 
   useEffect(() => {
     const setReferred = async(walletAddress: string, referred: string) => {
@@ -2119,257 +2129,344 @@ export function BuyGara({
   }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess]);
   
   return (
-    <GaraStoreProvider>
-      <section
-        id="buy-gara"
-        className={cn(
-          "relative mb-20 w-full max-w-[420px] flex-1 rounded-2xl bg-white p-6 px-5 shadow-md lg:rounded-t-2xl lg:ml-auto",
-          className
-        )}
-      >
-        <div className="mt-4 grid grid-cols-[1fr_280px_1fr] gap-2">
-          <div className="relative flex w-full flex-row items-center justify-center">
-            <div className="h-[2px] w-full bg-black dark:bg-neutral-700"></div>
-          </div>
-          <p className="text-center font-heading text-xl font-black">Countdown to Price Increase</p>
-          <div className="relative flex w-full flex-row items-center justify-center">
-            <div className="h-[2px] w-full bg-black dark:bg-neutral-700"></div>
-          </div>
-        </div>
-        <div className="my-4 flex flex-row justify-center">
-          <CountdownTimer />
-        </div>
-        <div className="flex flex-col items-center justify-between rounded-md p-4">
-          <div className="flex w-full justify-between text-lg text-gray-800">
-            <span>
-              Current Price: <span className="font-bold text-[#28E0B9]">${currentPrice.toFixed(2)}</span>
-            </span>
-            <span>
-              Listing price: <span className="font-bold text-gray-900">$0.36</span>
-            </span>
-          </div>
-          <div className="relative my-2 w-full">
-            <ProgressBar
-              completed={((tokenSold / 1000000) * 100).toFixed(2)}
-              animateOnRender={true}
-              isLabelVisible={false}
-              height="16px"
-              bgColor="#28E0B9"
-              baseBgColor="#0D1E35"
-              borderRadius="20px"
-              className=""
-            />
-          </div>
-          <p className="text-center text-lg text-gray-800">
-            Raised: <span className="font-black text-gray-900">${new Intl.NumberFormat("en-US").format(tokenSold)}</span>{" "}
-            / $1,000,000
-          </p>
-        </div>
-        <div className="mt-4 grid grid-cols-[1fr_220px_1fr] gap-2 lg:hidden">
-          <div className="relative flex w-full flex-row items-center justify-center">
-            <div className="h-[2px] w-full bg-black dark:bg-neutral-700"></div>
-          </div>
-          <p className="text-center font-heading text-lg">Presale payment methods</p>
-          <div className="relative flex w-full flex-row items-center justify-center">
-            <div className="h-[2px] w-full bg-black dark:bg-neutral-700"></div>
-          </div>
-        </div>
-        <div className="mt-4 flex flex-row items-center justify-between gap-2">
-          <button
-            onClick={() => handleNetworkSwitch("ethereum")}
-            className={`group flex-1 rounded-3xl border-0 ${
-              activeButton === "ethereum" ? "bg-[#024365]" : "bg-[#FFEEDC]"
-            } flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
-          >
-            <Image
-              src="/images/gara-coin/ethereum.png"
-              alt="Ethereum"
-              width={24}
-              height={24}
-              className="mb-1 sm:mb-0 sm:mr-2"
-            />
-            <span
-              className={`font-black ${
-                activeButton === "ethereum" ? "text-white" : "text-black"
-              } text-[10px] sm:text-base`}
-            >
-              <span className="hidden sm:inline">Ethereum</span>
-              <span className="inline text-2xl sm:hidden">ETH</span>
-            </span>
-          </button>
-
-          <button
-            onClick={() => handleNetworkSwitch("polygon")}
-            className={`group flex-1 rounded-3xl border-0 ${
-              activeButton === "polygon" ? "bg-[#024365]" : "bg-[#FFEEDC]"
-            } flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
-          >
-            <Image
-              src="/images/gara-coin/pol.png"
-              alt="Polygon"
-              width={24}
-              height={24}
-              className="mb-1 sm:mb-0 sm:mr-2"
-            />
-            <span
-              className={`font-black ${
-                activeButton === "polygon" ? "text-white" : "text-black"
-              } text-[10px] sm:text-base`}
-            >
-              <span className="hidden sm:inline">Polygon</span>
-              <span className="inline text-2xl sm:hidden">POL</span>
-            </span>
-          </button>
-
-          <button
-            onClick={() => handleNetworkSwitch("bsc")}
-            className={`group flex-1 rounded-3xl border-0 ${
-              activeButton === "bsc" ? "bg-[#024365]" : "bg-[#FFEEDC]"
-            } flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
-          >
-            <Image
-              src="/images/gara-coin/bsc.png"
-              alt="BSC"
-              width={24}
-              height={24}
-              className="mb-1 sm:mb-0 sm:mr-2"
-            />
-            <span
-              className={`font-black ${activeButton === "bsc" ? "text-white" : "text-black"} text-[10px] sm:text-base`}
-            >
-              <span className="hidden sm:inline">BSC</span>
-              <span className="inline text-2xl sm:hidden">BSC</span>
-            </span>
-          </button>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-full mb-4">
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col relative w-full">
-              <p className="font-black">Pay with your choice</p>
-              <CoinInput
-                coin={token || "USDC"}
-                type="number"
-                placeholder="0.000"
-                {...register("amount", { required: "Amount is required" })}
-                onChange={handleSourceAmountChange}
-                onBlur={handleSourceAmountBlur}
-                showIcon={false}
-                className="w-full"
-                value={amount}
-              />
-              <div className="absolute -right-2 top-2/3 transform -translate-y-1/2">
-                <CurrencySelect form={form} currentNetworkId={currentNetworkId} />
-              </div>
+    <ThemeProvider theme={theme}>
+      <GaraStoreProvider>
+        <section
+          id="buy-gara"
+          className={cn(
+            "relative mb-20 w-full max-w-[420px] flex-1 rounded-2xl p-6 px-5 shadow-md lg:rounded-t-2xl lg:ml-auto",
+            className
+          )}
+          style={{
+            backgroundColor: mergedTheme.backgroundColor,
+            color: mergedTheme.textColor,
+            borderRadius: mergedTheme.borderRadius
+          }}
+        >
+          <div className="mt-4 grid grid-cols-[1fr_280px_1fr] gap-2">
+            <div className="relative flex w-full flex-row items-center justify-center">
+              <div className="h-[2px] w-full bg-black dark:bg-neutral-700" 
+                   style={{ backgroundColor: mergedTheme.textColor }}></div>
             </div>
-
-            <div className="flex flex-col w-full">
-              <p className="font-black">Receive $GARA</p>
-              <CoinInput
-                coin="GARA"
-                type="number"
-                placeholder="0.000"
-                {...register("garaEstimate", { required: "GARA amount is required" })}
-                onChange={handleGaraAmountChange}
-                onBlur={handleGaraAmountBlur}
-                className="w-full"
-                value={garaEstimate}
-              />
+            <p className="text-center font-heading text-xl font-black" 
+               style={{ color: mergedTheme.textColor }}>
+              Countdown to Price Increase
+            </p>
+            <div className="relative flex w-full flex-row items-center justify-center">
+              <div className="h-[2px] w-full bg-black dark:bg-neutral-700"
+                   style={{ backgroundColor: mergedTheme.textColor }}></div>
             </div>
           </div>
-          <input type="hidden" {...register("from")} />
-          <input type="hidden" {...register("to")} />
-          <input type="hidden" name="chain" value={chain?.name} />
-          <div className="my-4 grid grid-cols-5 gap-2">
-            {[50, 100, 500, 1000].map((value) => (
-              <button
-                key={value}
-                className="group flex flex-1 items-center justify-center rounded-full border-0 bg-[#FFEEDC] p-2 font-black hover:bg-[#024365] hover:text-white"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsConverting(true);
-
-                  // Ensure preset is always above minimum
-                  const usdValue = Math.max(value, 20);
-                  
-                  if (activeInput === "source") {
-                    const convertedValue = convertUsdToSelectedCurrency(usdValue);
-                    setValue("amount", convertedValue);
-                    const newGaraEstimate = calculateGaraFromSource(convertedValue);
-                    setValue("garaEstimate", newGaraEstimate);
-                    setInputUsdValue(usdValue);
-                  } else {
-                    const garaValue = (usdValue / getCurrentPrice()).toFixed(5);
-                    setValue("garaEstimate", garaValue);
-                    const newAmount = calculateSourceFromGara(garaValue);
-                    setValue("amount", newAmount);
-                    setInputUsdValue(usdValue);
-                  }
-
-                  setTimeout(() => setIsConverting(false), 100);
-                }}
-              >
-                {`$${value}`}
-              </button>
-            ))}
+          
+          <div className="my-4 flex flex-row justify-center">
+            <CountdownTimer />
+          </div>
+          
+          <div className="flex flex-col items-center justify-between rounded-md p-4">
+            <div className="flex w-full justify-between text-lg text-gray-800"
+                 style={{ color: mergedTheme.textColor }}>
+              <span>
+                Current Price: <span className="font-bold" 
+                                     style={{ color: mergedTheme.secondaryColor }}>${currentPrice.toFixed(2)}</span>
+              </span>
+              <span>
+                Listing price: <span className="font-bold" 
+                                    style={{ color: mergedTheme.textColor }}>$0.36</span>
+              </span>
+            </div>
+            
+            <div className="relative my-2 w-full">
+              <ProgressBar
+                completed={((tokenSold / 1000000) * 100).toFixed(2)}
+                animateOnRender={true}
+                isLabelVisible={false}
+                height="16px"
+                bgColor={mergedTheme.progressBar?.fillColor || mergedTheme.secondaryColor}
+                baseBgColor={mergedTheme.progressBar?.backgroundColor || "#0D1E35"}
+                borderRadius={mergedTheme.borderRadius || "20px"}
+                className=""
+              />
+            </div>
+            
+            <p className="text-center text-lg text-gray-800" style={{ color: mergedTheme.textColor }}>
+              Raised: <span className="font-black text-gray-900" style={{ color: mergedTheme.textColor }}>
+                ${new Intl.NumberFormat("en-US").format(tokenSold)}
+              </span>{" "} / $1,000,000
+            </p>
+          </div>
+          
+          <div className="mt-4 grid grid-cols-[1fr_220px_1fr] gap-2 lg:hidden">
+            <div className="relative flex w-full flex-row items-center justify-center">
+              <div className="h-[2px] w-full bg-black dark:bg-neutral-700"
+                   style={{ backgroundColor: mergedTheme.textColor }}></div>
+            </div>
+            <p className="text-center font-heading text-lg" style={{ color: mergedTheme.textColor }}>
+              Presale payment methods
+            </p>
+            <div className="relative flex w-full flex-row items-center justify-center">
+              <div className="h-[2px] w-full bg-black dark:bg-neutral-700"
+                   style={{ backgroundColor: mergedTheme.textColor }}></div>
+            </div>
+          </div>
+          
+          <div className="mt-4 flex flex-row items-center justify-between gap-2">
             <button
-              className="group flex flex-1 items-center justify-center rounded-full border-0 bg-gray-200 p-2 font-black hover:bg-[#024365] hover:text-white"
-              onClick={handleMaxButtonClick}
+              onClick={() => handleNetworkSwitch("ethereum")}
+              className={`group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
+              style={{
+                backgroundColor: activeButton === "ethereum" 
+                  ? mergedTheme.networkButtons?.activeBackgroundColor || mergedTheme.primaryColor
+                  : mergedTheme.networkButtons?.inactiveBackgroundColor || "#FFEEDC",
+                color: activeButton === "ethereum"
+                  ? mergedTheme.networkButtons?.activeTextColor || "#FFFFFF"
+                  : mergedTheme.networkButtons?.inactiveTextColor || "#000000",
+                borderRadius: mergedTheme.borderRadius
+              }}
             >
-              MAX
+              <Image
+                src="../../assets/ethereum.png"
+                alt="Ethereum"
+                width={24}
+                height={24}
+                className="mb-1 sm:mb-0 sm:mr-2"
+              />
+              <span className="font-black text-[10px] sm:text-base">
+                <span className="hidden sm:inline">Ethereum</span>
+                <span className="inline text-2xl sm:hidden">ETH</span>
+              </span>
+            </button>
+  
+            <button
+              onClick={() => handleNetworkSwitch("polygon")}
+              className={`group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
+              style={{
+                backgroundColor: activeButton === "polygon" 
+                  ? mergedTheme.networkButtons?.activeBackgroundColor || mergedTheme.primaryColor
+                  : mergedTheme.networkButtons?.inactiveBackgroundColor || "#FFEEDC",
+                color: activeButton === "polygon"
+                  ? mergedTheme.networkButtons?.activeTextColor || "#FFFFFF"
+                  : mergedTheme.networkButtons?.inactiveTextColor || "#000000",
+                borderRadius: mergedTheme.borderRadius
+              }}
+            >
+              <Image
+                src="../../assets/pol.png"
+                alt="Polygon"
+                width={24}
+                height={24}
+                className="mb-1 sm:mb-0 sm:mr-2"
+              />
+              <span className="font-black text-[10px] sm:text-base">
+                <span className="hidden sm:inline">Polygon</span>
+                <span className="inline text-2xl sm:hidden">POL</span>
+              </span>
+            </button>
+  
+            <button
+              onClick={() => handleNetworkSwitch("bsc")}
+              className={`group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`}
+              style={{
+                backgroundColor: activeButton === "bsc" 
+                  ? mergedTheme.networkButtons?.activeBackgroundColor || mergedTheme.primaryColor
+                  : mergedTheme.networkButtons?.inactiveBackgroundColor || "#FFEEDC",
+                color: activeButton === "bsc"
+                  ? mergedTheme.networkButtons?.activeTextColor || "#FFFFFF"
+                  : mergedTheme.networkButtons?.inactiveTextColor || "#000000",
+                borderRadius: mergedTheme.borderRadius
+              }}
+            >
+              <Image
+                src="../../assets/bsc.png"
+                alt="BSC"
+                width={24}
+                height={24}
+                className="mb-1 sm:mb-0 sm:mr-2"
+              />
+              <span className="font-black text-[10px] sm:text-base">
+                <span className="hidden sm:inline">BSC</span>
+                <span className="inline text-2xl sm:hidden">BSC</span>
+              </span>
             </button>
           </div>
-          {showMinimumError && (
-            <div className="mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2">
-              <p className="text-sm text-red-600 font-medium">
-                Minimum amount required: {token === "USDT" || token === "USDC" 
-                  ? 20 
-                  : (20 / (nativeUSD / 10)).toFixed(5)} {token}
-              </p>
+          
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-full mb-4">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col relative w-full">
+                <p className="font-black" style={{ color: mergedTheme.textColor }}>
+                  Pay with your choice
+                </p>
+                <CoinInput
+                  coin={token || "USDC"}
+                  type="number"
+                  placeholder="0.000"
+                  {...register("amount", { required: "Amount is required" })}
+                  onChange={handleSourceAmountChange}
+                  onBlur={handleSourceAmountBlur}
+                  showIcon={false}
+                  className="w-full"
+                  value={amount}
+                  style={{
+                    backgroundColor: mergedTheme.inputFields?.backgroundColor,
+                    color: mergedTheme.inputFields?.textColor,
+                    borderColor: mergedTheme.inputFields?.borderColor,
+                    borderRadius: mergedTheme.borderRadius
+                  }}
+                />
+                <div className="absolute -right-2 top-2/3 transform -translate-y-1/2">
+                  <CurrencySelect form={form} currentNetworkId={currentNetworkId} />
+                </div>
+              </div>
+  
+              <div className="flex flex-col w-full">
+                <p className="font-black" style={{ color: mergedTheme.textColor }}>
+                  Receive $GARA
+                </p>
+                <CoinInput
+                  coin="GARA"
+                  type="number"
+                  placeholder="0.000"
+                  {...register("garaEstimate", { required: "GARA amount is required" })}
+                  onChange={handleGaraAmountChange}
+                  onBlur={handleGaraAmountBlur}
+                  className="w-full"
+                  value={garaEstimate}
+                  style={{
+                    backgroundColor: mergedTheme.inputFields?.backgroundColor,
+                    color: mergedTheme.inputFields?.textColor,
+                    borderColor: mergedTheme.inputFields?.borderColor,
+                    borderRadius: mergedTheme.borderRadius
+                  }}
+                />
+              </div>
             </div>
-          )}
-          {hasUnsufficientBalance && (
-            <div className="mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2">
-              <p className="text-sm text-red-600 font-medium">Insufficient balance. Your current balance: {parseFloat(currentTokenBalance).toFixed(5)} {token}</p>
-            </div>
-          )}
-          <div className={cn("mt-2 gap-4", address ? "flex flex-col" : "flex flex-col lg:flex-row")}>
-            <div className={cn("flex-1", !address && "hidden")}>
-              <Button
-                type="submit"
-                variant={address ? "default" : "outlinePrimary"}
-                disabled={!address || hasUnsufficientBalance || hasLowerInputBalance || isCalculatingMinBalance}
-                className="h-12 w-full rounded-full bg-[#061022] text-center text-xl font-bold text-[#FFAE17]"
+            
+            <input type="hidden" {...register("from")} />
+            <input type="hidden" {...register("to")} />
+            <input type="hidden" name="chain" value={chain?.name} />
+            
+            <div className="my-4 grid grid-cols-5 gap-2">
+              {[50, 100, 500, 1000].map((value) => (
+                <button
+                  key={value}
+                  className="group flex flex-1 items-center justify-center rounded-full border-0 p-2 font-black"
+                  style={{
+                    backgroundColor: mergedTheme.actionButtons?.backgroundColor || "#FFEEDC",
+                    color: mergedTheme.actionButtons?.textColor || "#000000",
+                    borderRadius: mergedTheme.borderRadius
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsConverting(true);
+  
+                    // Ensure preset is always above minimum
+                    const usdValue = Math.max(value, 20);
+                    
+                    if (activeInput === "source") {
+                      const convertedValue = convertUsdToSelectedCurrency(usdValue);
+                      setValue("amount", convertedValue);
+                      const newGaraEstimate = calculateGaraFromSource(convertedValue);
+                      setValue("garaEstimate", newGaraEstimate);
+                      setInputUsdValue(usdValue);
+                    } else {
+                      const garaValue = (usdValue / getCurrentPrice()).toFixed(5);
+                      setValue("garaEstimate", garaValue);
+                      const newAmount = calculateSourceFromGara(garaValue);
+                      setValue("amount", newAmount);
+                      setInputUsdValue(usdValue);
+                    }
+  
+                    setTimeout(() => setIsConverting(false), 100);
+                  }}
+                >
+                  {`$${value}`}
+                </button>
+              ))}
+              <button
+                className="group flex flex-1 items-center justify-center rounded-full border-0 p-2 font-black"
+                style={{
+                  backgroundColor: "#f3f4f6",
+                  color: mergedTheme.textColor,
+                  borderRadius: mergedTheme.borderRadius
+                }}
+                onClick={handleMaxButtonClick}
               >
-                {t("btnBuyGARA")}
-              </Button>
+                MAX
+              </button>
             </div>
-            <div className="flex-1">
-              <ConnectButton
-                label={t("btnConnectWallet")}
-                showBalance={false}
-                className="h-12 w-full rounded-full bg-[#FF4473] text-center text-xl font-bold text-black shadow-[0px_5px_0px_#D29200]"
-              />
+            
+            {showMinimumError && (
+              <div className="mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2">
+                <p className="text-sm text-red-600 font-medium">
+                  Minimum amount required: {token === "USDT" || token === "USDC" 
+                    ? 20 
+                    : (20 / (nativeUSD / 10)).toFixed(5)} {token}
+                </p>
+              </div>
+            )}
+            
+            {hasUnsufficientBalance && (
+              <div className="mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2">
+                <p className="text-sm text-red-600 font-medium">
+                  Insufficient balance. Your current balance: {parseFloat(currentTokenBalance).toFixed(5)} {token}
+                </p>
+              </div>
+            )}
+            
+            <div className={cn("mt-2 gap-4", address ? "flex flex-col" : "flex flex-col lg:flex-row")}>
+              <div className={cn("flex-1", !address && "hidden")}>
+                <Button
+                  type="submit"
+                  variant={address ? "default" : "outlinePrimary"}
+                  disabled={!address || hasUnsufficientBalance || hasLowerInputBalance || isCalculatingMinBalance}
+                  className="h-12 w-full rounded-full text-center text-xl font-bold"
+                  style={{
+                    backgroundColor: mergedTheme.buyButton?.backgroundColor || "#061022",
+                    color: mergedTheme.buyButton?.textColor || "#FFAE17",
+                    borderRadius: mergedTheme.borderRadius
+                  }}
+                >
+                  {t("btnBuyGARA")}
+                </Button>
+              </div>
+              <div className="flex-1">
+                <ConnectButton
+                  label={t("btnConnectWallet")}
+                  showBalance={false}
+                  className="h-12 w-full rounded-full text-center text-xl font-bold"
+                  style={{
+                    backgroundColor: mergedTheme.connectButton?.backgroundColor || "#FF4473",
+                    color: mergedTheme.connectButton?.textColor || "#000000",
+                    borderRadius: mergedTheme.borderRadius
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <button
-            type="button" 
-            onClick={getRefferalLink}
-            className="w-full text-gary-yellow pt-6 px-6 rounded-full font-semibold"
-          >
-            + GET REFERRAL LINK
-          </button>
-          {showPopup && <ReferralPopup onClose={() => setShowPopup(false)} />}
-          <TransactionStatusModal
-            open={open}
-            toggleOpen={handleOnOpenChange}
-            setOpen={setOpen}
-            senderChainTxUrl={chainTxUrl}
-          />
-        </form>
-        <div className="absolute -bottom-[calc(50%+32px)] right-0 z-10 w-full h-full pointer-events-none">
-          <Image src="/images/ice_buy_gara.svg" fill alt="Ice Background" className="object-contain" />
-        </div>
-      </section> 
-    </GaraStoreProvider>
+            
+            <button
+              type="button" 
+              onClick={getRefferalLink}
+              className="w-full pt-6 px-6 rounded-full font-semibold"
+              style={{ color: mergedTheme.textColor }}
+            >
+              + GET REFERRAL LINK
+            </button>
+            
+            {showPopup && <ReferralPopup onClose={() => setShowPopup(false)} />}
+            <TransactionStatusModal
+              open={open}
+              toggleOpen={handleOnOpenChange}
+              setOpen={setOpen}
+              senderChainTxUrl={chainTxUrl}
+            />
+          </form>
+          
+          {mergedTheme.backgroundColor === '#FFFFFF' && (
+            <div className="absolute -bottom-[calc(50%+32px)] right-0 z-10 w-full h-full pointer-events-none">
+              <Image src="../../assets/ice_buy_gara.svg" fill alt="Ice Background" className="object-contain" />
+            </div>
+          )}
+        </section> 
+      </GaraStoreProvider>
+    </ThemeProvider>
   )
 }

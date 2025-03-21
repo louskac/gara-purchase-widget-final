@@ -10,12 +10,6 @@ export { getTokenBalance } from './lib/get-balance';
 export { cn, formatAmount, getGaraEstimate, usdcToGara } from './utils/utils';
 export * from './types';
 export { GaraStoreProvider, useGaraStore } from './lib/store/provider';
-export declare const createWidgetTheme: (config: {
-    primaryColor: string;
-    secondaryColor: string;
-    [key: string]: any;
-}) => {
-    [key: string]: any;
-    primaryColor: string;
-    secondaryColor: string;
-};
+export type { GaraWidgetThemeConfig } from './lib/theme/index';
+export { defaultTheme, darkTheme, createWidgetTheme } from './lib/theme/index';
+export { ThemeProvider, useTheme } from './lib/theme/context';

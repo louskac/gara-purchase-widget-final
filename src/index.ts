@@ -19,10 +19,6 @@ export * from './types';
 export { GaraStoreProvider, useGaraStore } from './lib/store/provider';
 
 // Export theme utilities
-export const createWidgetTheme = (config: {
-  primaryColor: string;
-  secondaryColor: string;
-  [key: string]: any;
-}) => {
-  return config;
-};
+export type { GaraWidgetThemeConfig } from './lib/theme/index';
+export { defaultTheme, darkTheme, createWidgetTheme } from './lib/theme/index';
+export { ThemeProvider, useTheme } from './lib/theme/context';

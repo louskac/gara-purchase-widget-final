@@ -5,7 +5,7 @@ import { polygon, bsc, mainnet } from 'viem/chains';
 import { parseAbi, http, createClient as createClient$1, custom, hexToString, createPublicClient, parseUnits, isAddress } from 'viem';
 import Image from 'next/image';
 import { Slot } from '@radix-ui/react-slot';
-import { ConnectButton as ConnectButton$1, connectorsForWallets, getDefaultConfig as getDefaultConfig$1, RainbowKitProvider, darkTheme, useAddRecentTransaction, useChainModal } from '@rainbow-me/rainbowkit';
+import { ConnectButton as ConnectButton$1, connectorsForWallets, getDefaultConfig as getDefaultConfig$1, RainbowKitProvider, darkTheme as darkTheme$1, useAddRecentTransaction, useChainModal } from '@rainbow-me/rainbowkit';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Primitive } from '@radix-ui/react-primitive';
 import { useId } from '@radix-ui/react-id';
@@ -4456,7 +4456,7 @@ const config = getDefaultConfig$1({
     }),
 });
 const WalletProviders = ({ children, locale }) => {
-    return (jsx(GaraStoreProvider, { children: jsx(WagmiProvider, { config: config, children: jsx(RainbowKitProvider, { theme: darkTheme(), locale: locale, children: children }) }) }));
+    return (jsx(GaraStoreProvider, { children: jsx(WagmiProvider, { config: config, children: jsx(RainbowKitProvider, { theme: darkTheme$1(), locale: locale, children: children }) }) }));
 };
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -27069,6 +27069,80 @@ const ReferralPopup = ({ onClose }) => {
                                         }, className: "ml-2 font-bold text-gary-yellow hover:text-black", "aria-label": "Copy address", children: copied ? jsx(Check, { size: 18 }) : jsx(Copy, { size: 18 }) }) })] })), jsxs("div", { className: "my-4 rounded-lg bg-gray-300 p-3 text-lg font-bold text-gray-700", children: ["Connected Wallet (", formatAddress(address, 5), ")"] }), jsx("div", { className: "mt-4 mx-auto w-fit rounded-full bg-green-500 py-2 px-4 text-white font-semibold", children: "Referral Active" })] }))] }) }));
 };
 
+// Default theme
+const defaultTheme = {
+    primaryColor: '#FF4473',
+    secondaryColor: '#28E0B9',
+    backgroundColor: '#FFFFFF',
+    textColor: '#000000',
+    borderRadius: '16px',
+    progressBar: {
+        backgroundColor: '#0D1E35',
+        fillColor: '#28E0B9'
+    },
+    networkButtons: {
+        activeBackgroundColor: '#024365',
+        inactiveBackgroundColor: '#FFEEDC',
+        activeTextColor: '#FFFFFF',
+        inactiveTextColor: '#000000'
+    },
+    inputFields: {
+        backgroundColor: '#FFFFFF',
+        textColor: '#000000',
+        borderColor: '#E5E7EB'
+    },
+    connectButton: {
+        backgroundColor: '#FF4473',
+        textColor: '#000000'
+    },
+    buyButton: {
+        backgroundColor: '#061022',
+        textColor: '#FFAE17'
+    }
+};
+// Dark theme
+const darkTheme = {
+    primaryColor: '#FF3E6C',
+    secondaryColor: '#5CCEA4',
+    backgroundColor: '#121212',
+    textColor: '#FFFFFF',
+    borderRadius: '20px',
+    progressBar: {
+        backgroundColor: '#4B4A4A',
+        fillColor: '#5CCEA4'
+    },
+    networkButtons: {
+        activeBackgroundColor: '#FF3E6C',
+        inactiveBackgroundColor: '#302E2E',
+        activeTextColor: '#FFFFFF',
+        inactiveTextColor: '#FFFFFF'
+    },
+    inputFields: {
+        backgroundColor: '#302E2E',
+        textColor: '#FFFFFF',
+        borderColor: '#444444'
+    },
+    connectButton: {
+        backgroundColor: '#FF3E6C',
+        textColor: '#FFFFFF'
+    },
+    buyButton: {
+        backgroundColor: '#FF3E6C',
+        textColor: '#FFFFFF'
+    }
+};
+// Theme creator function
+function createWidgetTheme(config) {
+    return Object.assign(Object.assign(Object.assign({}, defaultTheme), config), { progressBar: Object.assign(Object.assign({}, defaultTheme.progressBar), (config.progressBar || {})), networkButtons: Object.assign(Object.assign({}, defaultTheme.networkButtons), (config.networkButtons || {})), inputFields: Object.assign(Object.assign({}, defaultTheme.inputFields), (config.inputFields || {})), connectButton: Object.assign(Object.assign({}, defaultTheme.connectButton), (config.connectButton || {})), buyButton: Object.assign(Object.assign({}, defaultTheme.buyButton), (config.buyButton || {})) });
+}
+
+const ThemeContext = createContext({ theme: defaultTheme });
+const useTheme = () => useContext(ThemeContext);
+const ThemeProvider = ({ theme = {}, children }) => {
+    const mergedTheme = Object.assign(Object.assign(Object.assign({}, defaultTheme), theme), { progressBar: Object.assign(Object.assign({}, defaultTheme.progressBar), (theme.progressBar || {})), networkButtons: Object.assign(Object.assign({}, defaultTheme.networkButtons), (theme.networkButtons || {})), inputFields: Object.assign(Object.assign({}, defaultTheme.inputFields), (theme.inputFields || {})), connectButton: Object.assign(Object.assign({}, defaultTheme.connectButton), (theme.connectButton || {})), buyButton: Object.assign(Object.assign({}, defaultTheme.buyButton), (theme.buyButton || {})) });
+    return (jsx(ThemeContext.Provider, { value: { theme: mergedTheme }, children: children }));
+};
+
 const COINGARAGE_CONTRACT_ADDRESS = "0xb523aBD0732a3208670ffceaF61eAbf7672a7402";
 const endDate = 1740787199;
 const firstRoundEndDate = 1735689599;
@@ -27867,9 +27941,9 @@ const calculateRound = () => {
     }
 };
 const BACKEND_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT;
-function BuyGara({ className, hideHeader = false, onTransactionSuccess = null // Add this prop
+function BuyGara({ className, hideHeader = false, onTransactionSuccess = null, theme = {} // Add theme prop
  }) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1;
     const [currentNetworkId, setCurrentNetworkId] = useState(1);
     const [hasFetchedOnLoad, setHasFetchedOnLoad] = useState(false);
     const [activeButton, setActiveButton] = useState("ethereum");
@@ -27883,6 +27957,10 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null //
     const [currentTokenBalance, setCurrentTokenBalance] = useState("0");
     const searchParams = useSearchParams();
     const { address, chain } = useAccount();
+    // Theme from context
+    const { theme: contextTheme } = useTheme();
+    // Theme prop with context theme
+    const mergedTheme = Object.assign(Object.assign({}, contextTheme), theme);
     useEffect(() => {
         const setReferred = (walletAddress, referred) => __awaiter$8(this, void 0, void 0, function* () {
             try {
@@ -28706,36 +28784,87 @@ function BuyGara({ className, hideHeader = false, onTransactionSuccess = null //
             }
         }
     }, [transactionStatus, garaEstimate, amount, token, currentPrice, onTransactionSuccess]);
-    return (jsx(GaraStoreProvider, { children: jsxs("section", { id: "buy-gara", className: cn("relative mb-20 w-full max-w-[420px] flex-1 rounded-2xl bg-white p-6 px-5 shadow-md lg:rounded-t-2xl lg:ml-auto", className), children: [jsxs("div", { className: "mt-4 grid grid-cols-[1fr_280px_1fr] gap-2", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) }), jsx("p", { className: "text-center font-heading text-xl font-black", children: "Countdown to Price Increase" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) })] }), jsx("div", { className: "my-4 flex flex-row justify-center", children: jsx(CountdownTimer, {}) }), jsxs("div", { className: "flex flex-col items-center justify-between rounded-md p-4", children: [jsxs("div", { className: "flex w-full justify-between text-lg text-gray-800", children: [jsxs("span", { children: ["Current Price: ", jsxs("span", { className: "font-bold text-[#28E0B9]", children: ["$", currentPrice.toFixed(2)] })] }), jsxs("span", { children: ["Listing price: ", jsx("span", { className: "font-bold text-gray-900", children: "$0.36" })] })] }), jsx("div", { className: "relative my-2 w-full", children: jsx(ProgressBar, { completed: ((tokenSold / 1000000) * 100).toFixed(2), animateOnRender: true, isLabelVisible: false, height: "16px", bgColor: "#28E0B9", baseBgColor: "#0D1E35", borderRadius: "20px", className: "" }) }), jsxs("p", { className: "text-center text-lg text-gray-800", children: ["Raised: ", jsxs("span", { className: "font-black text-gray-900", children: ["$", new Intl.NumberFormat("en-US").format(tokenSold)] }), " ", "/ $1,000,000"] })] }), jsxs("div", { className: "mt-4 grid grid-cols-[1fr_220px_1fr] gap-2 lg:hidden", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) }), jsx("p", { className: "text-center font-heading text-lg", children: "Presale payment methods" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700" }) })] }), jsxs("div", { className: "mt-4 flex flex-row items-center justify-between gap-2", children: [jsxs("button", { onClick: () => handleNetworkSwitch("ethereum"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "ethereum" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/ethereum.png", alt: "Ethereum", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "ethereum" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "Ethereum" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "ETH" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("polygon"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "polygon" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/pol.png", alt: "Polygon", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "polygon" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "Polygon" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "POL" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("bsc"), className: `group flex-1 rounded-3xl border-0 ${activeButton === "bsc" ? "bg-[#024365]" : "bg-[#FFEEDC]"} flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, children: [jsx(Image, { src: "/images/gara-coin/bsc.png", alt: "BSC", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: `font-black ${activeButton === "bsc" ? "text-white" : "text-black"} text-[10px] sm:text-base`, children: [jsx("span", { className: "hidden sm:inline", children: "BSC" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "BSC" })] })] })] }), jsxs("form", { onSubmit: handleSubmit(onSubmit), className: "w-full max-w-full mb-4", children: [jsxs("div", { className: "mt-8 grid grid-cols-1 md:grid-cols-2 gap-4", children: [jsxs("div", { className: "flex flex-col relative w-full", children: [jsx("p", { className: "font-black", children: "Pay with your choice" }), jsx(CoinInput, Object.assign({ coin: token || "USDC", type: "number", placeholder: "0.000" }, register("amount", { required: "Amount is required" }), { onChange: handleSourceAmountChange, onBlur: handleSourceAmountBlur, showIcon: false, className: "w-full", value: amount })), jsx("div", { className: "absolute -right-2 top-2/3 transform -translate-y-1/2", children: jsx(CurrencySelect, { form: form, currentNetworkId: currentNetworkId }) })] }), jsxs("div", { className: "flex flex-col w-full", children: [jsx("p", { className: "font-black", children: "Receive $GARA" }), jsx(CoinInput, Object.assign({ coin: "GARA", type: "number", placeholder: "0.000" }, register("garaEstimate", { required: "GARA amount is required" }), { onChange: handleGaraAmountChange, onBlur: handleGaraAmountBlur, className: "w-full", value: garaEstimate }))] })] }), jsx("input", Object.assign({ type: "hidden" }, register("from"))), jsx("input", Object.assign({ type: "hidden" }, register("to"))), jsx("input", { type: "hidden", name: "chain", value: chain === null || chain === void 0 ? void 0 : chain.name }), jsxs("div", { className: "my-4 grid grid-cols-5 gap-2", children: [[50, 100, 500, 1000].map((value) => (jsx("button", { className: "group flex flex-1 items-center justify-center rounded-full border-0 bg-[#FFEEDC] p-2 font-black hover:bg-[#024365] hover:text-white", onClick: (e) => {
-                                        e.preventDefault();
-                                        setIsConverting(true);
-                                        // Ensure preset is always above minimum
-                                        const usdValue = Math.max(value, 20);
-                                        if (activeInput === "source") {
-                                            const convertedValue = convertUsdToSelectedCurrency(usdValue);
-                                            setValue("amount", convertedValue);
-                                            const newGaraEstimate = calculateGaraFromSource(convertedValue);
-                                            setValue("garaEstimate", newGaraEstimate);
-                                            setInputUsdValue(usdValue);
-                                        }
-                                        else {
-                                            const garaValue = (usdValue / getCurrentPrice()).toFixed(5);
-                                            setValue("garaEstimate", garaValue);
-                                            const newAmount = calculateSourceFromGara(garaValue);
-                                            setValue("amount", newAmount);
-                                            setInputUsdValue(usdValue);
-                                        }
-                                        setTimeout(() => setIsConverting(false), 100);
-                                    }, children: `$${value}` }, value))), jsx("button", { className: "group flex flex-1 items-center justify-center rounded-full border-0 bg-gray-200 p-2 font-black hover:bg-[#024365] hover:text-white", onClick: handleMaxButtonClick, children: "MAX" })] }), showMinimumError && (jsx("div", { className: "mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2", children: jsxs("p", { className: "text-sm text-red-600 font-medium", children: ["Minimum amount required: ", token === "USDT" || token === "USDC"
-                                        ? 20
-                                        : (20 / (nativeUSD / 10)).toFixed(5), " ", token] }) })), hasUnsufficientBalance && (jsx("div", { className: "mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2", children: jsxs("p", { className: "text-sm text-red-600 font-medium", children: ["Insufficient balance. Your current balance: ", parseFloat(currentTokenBalance).toFixed(5), " ", token] }) })), jsxs("div", { className: cn("mt-2 gap-4", address ? "flex flex-col" : "flex flex-col lg:flex-row"), children: [jsx("div", { className: cn("flex-1", !address && "hidden"), children: jsx(Button, { type: "submit", variant: address ? "default" : "outlinePrimary", disabled: !address || hasUnsufficientBalance || hasLowerInputBalance || isCalculatingMinBalance, className: "h-12 w-full rounded-full bg-[#061022] text-center text-xl font-bold text-[#FFAE17]", children: t("btnBuyGARA") }) }), jsx("div", { className: "flex-1", children: jsx(ConnectButton, { label: t("btnConnectWallet"), showBalance: false, className: "h-12 w-full rounded-full bg-[#FF4473] text-center text-xl font-bold text-black shadow-[0px_5px_0px_#D29200]" }) })] }), jsx("button", { type: "button", onClick: getRefferalLink, className: "w-full text-gary-yellow pt-6 px-6 rounded-full font-semibold", children: "+ GET REFERRAL LINK" }), showPopup && jsx(ReferralPopup, { onClose: () => setShowPopup(false) }), jsx(TransactionStatusModal, { open: open, toggleOpen: handleOnOpenChange, setOpen: setOpen, senderChainTxUrl: chainTxUrl })] }), jsx("div", { className: "absolute -bottom-[calc(50%+32px)] right-0 z-10 w-full h-full pointer-events-none", children: jsx(Image, { src: "/images/ice_buy_gara.svg", fill: true, alt: "Ice Background", className: "object-contain" }) })] }) }));
+    return (jsx(ThemeProvider, { theme: theme, children: jsx(GaraStoreProvider, { children: jsxs("section", { id: "buy-gara", className: cn("relative mb-20 w-full max-w-[420px] flex-1 rounded-2xl p-6 px-5 shadow-md lg:rounded-t-2xl lg:ml-auto", className), style: {
+                    backgroundColor: mergedTheme.backgroundColor,
+                    color: mergedTheme.textColor,
+                    borderRadius: mergedTheme.borderRadius
+                }, children: [jsxs("div", { className: "mt-4 grid grid-cols-[1fr_280px_1fr] gap-2", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700", style: { backgroundColor: mergedTheme.textColor } }) }), jsx("p", { className: "text-center font-heading text-xl font-black", style: { color: mergedTheme.textColor }, children: "Countdown to Price Increase" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700", style: { backgroundColor: mergedTheme.textColor } }) })] }), jsx("div", { className: "my-4 flex flex-row justify-center", children: jsx(CountdownTimer, {}) }), jsxs("div", { className: "flex flex-col items-center justify-between rounded-md p-4", children: [jsxs("div", { className: "flex w-full justify-between text-lg text-gray-800", style: { color: mergedTheme.textColor }, children: [jsxs("span", { children: ["Current Price: ", jsxs("span", { className: "font-bold", style: { color: mergedTheme.secondaryColor }, children: ["$", currentPrice.toFixed(2)] })] }), jsxs("span", { children: ["Listing price: ", jsx("span", { className: "font-bold", style: { color: mergedTheme.textColor }, children: "$0.36" })] })] }), jsx("div", { className: "relative my-2 w-full", children: jsx(ProgressBar, { completed: ((tokenSold / 1000000) * 100).toFixed(2), animateOnRender: true, isLabelVisible: false, height: "16px", bgColor: ((_c = mergedTheme.progressBar) === null || _c === void 0 ? void 0 : _c.fillColor) || mergedTheme.secondaryColor, baseBgColor: ((_d = mergedTheme.progressBar) === null || _d === void 0 ? void 0 : _d.backgroundColor) || "#0D1E35", borderRadius: mergedTheme.borderRadius || "20px", className: "" }) }), jsxs("p", { className: "text-center text-lg text-gray-800", style: { color: mergedTheme.textColor }, children: ["Raised: ", jsxs("span", { className: "font-black text-gray-900", style: { color: mergedTheme.textColor }, children: ["$", new Intl.NumberFormat("en-US").format(tokenSold)] }), " ", " / $1,000,000"] })] }), jsxs("div", { className: "mt-4 grid grid-cols-[1fr_220px_1fr] gap-2 lg:hidden", children: [jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700", style: { backgroundColor: mergedTheme.textColor } }) }), jsx("p", { className: "text-center font-heading text-lg", style: { color: mergedTheme.textColor }, children: "Presale payment methods" }), jsx("div", { className: "relative flex w-full flex-row items-center justify-center", children: jsx("div", { className: "h-[2px] w-full bg-black dark:bg-neutral-700", style: { backgroundColor: mergedTheme.textColor } }) })] }), jsxs("div", { className: "mt-4 flex flex-row items-center justify-between gap-2", children: [jsxs("button", { onClick: () => handleNetworkSwitch("ethereum"), className: `group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, style: {
+                                    backgroundColor: activeButton === "ethereum"
+                                        ? ((_e = mergedTheme.networkButtons) === null || _e === void 0 ? void 0 : _e.activeBackgroundColor) || mergedTheme.primaryColor
+                                        : ((_f = mergedTheme.networkButtons) === null || _f === void 0 ? void 0 : _f.inactiveBackgroundColor) || "#FFEEDC",
+                                    color: activeButton === "ethereum"
+                                        ? ((_g = mergedTheme.networkButtons) === null || _g === void 0 ? void 0 : _g.activeTextColor) || "#FFFFFF"
+                                        : ((_h = mergedTheme.networkButtons) === null || _h === void 0 ? void 0 : _h.inactiveTextColor) || "#000000",
+                                    borderRadius: mergedTheme.borderRadius
+                                }, children: [jsx(Image, { src: "../../assets/ethereum.png", alt: "Ethereum", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: "font-black text-[10px] sm:text-base", children: [jsx("span", { className: "hidden sm:inline", children: "Ethereum" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "ETH" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("polygon"), className: `group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, style: {
+                                    backgroundColor: activeButton === "polygon"
+                                        ? ((_j = mergedTheme.networkButtons) === null || _j === void 0 ? void 0 : _j.activeBackgroundColor) || mergedTheme.primaryColor
+                                        : ((_k = mergedTheme.networkButtons) === null || _k === void 0 ? void 0 : _k.inactiveBackgroundColor) || "#FFEEDC",
+                                    color: activeButton === "polygon"
+                                        ? ((_l = mergedTheme.networkButtons) === null || _l === void 0 ? void 0 : _l.activeTextColor) || "#FFFFFF"
+                                        : ((_m = mergedTheme.networkButtons) === null || _m === void 0 ? void 0 : _m.inactiveTextColor) || "#000000",
+                                    borderRadius: mergedTheme.borderRadius
+                                }, children: [jsx(Image, { src: "../../assets/pol.png", alt: "Polygon", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: "font-black text-[10px] sm:text-base", children: [jsx("span", { className: "hidden sm:inline", children: "Polygon" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "POL" })] })] }), jsxs("button", { onClick: () => handleNetworkSwitch("bsc"), className: `group flex-1 rounded-3xl border-0 flex h-[80px] w-[80px] flex-col items-center justify-center px-4 py-4 sm:h-12 sm:w-auto sm:flex-row sm:px-6 sm:py-2`, style: {
+                                    backgroundColor: activeButton === "bsc"
+                                        ? ((_o = mergedTheme.networkButtons) === null || _o === void 0 ? void 0 : _o.activeBackgroundColor) || mergedTheme.primaryColor
+                                        : ((_p = mergedTheme.networkButtons) === null || _p === void 0 ? void 0 : _p.inactiveBackgroundColor) || "#FFEEDC",
+                                    color: activeButton === "bsc"
+                                        ? ((_q = mergedTheme.networkButtons) === null || _q === void 0 ? void 0 : _q.activeTextColor) || "#FFFFFF"
+                                        : ((_r = mergedTheme.networkButtons) === null || _r === void 0 ? void 0 : _r.inactiveTextColor) || "#000000",
+                                    borderRadius: mergedTheme.borderRadius
+                                }, children: [jsx(Image, { src: "../../assets/bsc.png", alt: "BSC", width: 24, height: 24, className: "mb-1 sm:mb-0 sm:mr-2" }), jsxs("span", { className: "font-black text-[10px] sm:text-base", children: [jsx("span", { className: "hidden sm:inline", children: "BSC" }), jsx("span", { className: "inline text-2xl sm:hidden", children: "BSC" })] })] })] }), jsxs("form", { onSubmit: handleSubmit(onSubmit), className: "w-full max-w-full mb-4", children: [jsxs("div", { className: "mt-8 grid grid-cols-1 md:grid-cols-2 gap-4", children: [jsxs("div", { className: "flex flex-col relative w-full", children: [jsx("p", { className: "font-black", style: { color: mergedTheme.textColor }, children: "Pay with your choice" }), jsx(CoinInput, Object.assign({ coin: token || "USDC", type: "number", placeholder: "0.000" }, register("amount", { required: "Amount is required" }), { onChange: handleSourceAmountChange, onBlur: handleSourceAmountBlur, showIcon: false, className: "w-full", value: amount, style: {
+                                                    backgroundColor: (_s = mergedTheme.inputFields) === null || _s === void 0 ? void 0 : _s.backgroundColor,
+                                                    color: (_t = mergedTheme.inputFields) === null || _t === void 0 ? void 0 : _t.textColor,
+                                                    borderColor: (_u = mergedTheme.inputFields) === null || _u === void 0 ? void 0 : _u.borderColor,
+                                                    borderRadius: mergedTheme.borderRadius
+                                                } })), jsx("div", { className: "absolute -right-2 top-2/3 transform -translate-y-1/2", children: jsx(CurrencySelect, { form: form, currentNetworkId: currentNetworkId }) })] }), jsxs("div", { className: "flex flex-col w-full", children: [jsx("p", { className: "font-black", style: { color: mergedTheme.textColor }, children: "Receive $GARA" }), jsx(CoinInput, Object.assign({ coin: "GARA", type: "number", placeholder: "0.000" }, register("garaEstimate", { required: "GARA amount is required" }), { onChange: handleGaraAmountChange, onBlur: handleGaraAmountBlur, className: "w-full", value: garaEstimate, style: {
+                                                    backgroundColor: (_v = mergedTheme.inputFields) === null || _v === void 0 ? void 0 : _v.backgroundColor,
+                                                    color: (_w = mergedTheme.inputFields) === null || _w === void 0 ? void 0 : _w.textColor,
+                                                    borderColor: (_x = mergedTheme.inputFields) === null || _x === void 0 ? void 0 : _x.borderColor,
+                                                    borderRadius: mergedTheme.borderRadius
+                                                } }))] })] }), jsx("input", Object.assign({ type: "hidden" }, register("from"))), jsx("input", Object.assign({ type: "hidden" }, register("to"))), jsx("input", { type: "hidden", name: "chain", value: chain === null || chain === void 0 ? void 0 : chain.name }), jsxs("div", { className: "my-4 grid grid-cols-5 gap-2", children: [[50, 100, 500, 1000].map((value) => {
+                                        var _a, _b;
+                                        return (jsx("button", { className: "group flex flex-1 items-center justify-center rounded-full border-0 p-2 font-black", style: {
+                                                backgroundColor: ((_a = mergedTheme.actionButtons) === null || _a === void 0 ? void 0 : _a.backgroundColor) || "#FFEEDC",
+                                                color: ((_b = mergedTheme.actionButtons) === null || _b === void 0 ? void 0 : _b.textColor) || "#000000",
+                                                borderRadius: mergedTheme.borderRadius
+                                            }, onClick: (e) => {
+                                                e.preventDefault();
+                                                setIsConverting(true);
+                                                // Ensure preset is always above minimum
+                                                const usdValue = Math.max(value, 20);
+                                                if (activeInput === "source") {
+                                                    const convertedValue = convertUsdToSelectedCurrency(usdValue);
+                                                    setValue("amount", convertedValue);
+                                                    const newGaraEstimate = calculateGaraFromSource(convertedValue);
+                                                    setValue("garaEstimate", newGaraEstimate);
+                                                    setInputUsdValue(usdValue);
+                                                }
+                                                else {
+                                                    const garaValue = (usdValue / getCurrentPrice()).toFixed(5);
+                                                    setValue("garaEstimate", garaValue);
+                                                    const newAmount = calculateSourceFromGara(garaValue);
+                                                    setValue("amount", newAmount);
+                                                    setInputUsdValue(usdValue);
+                                                }
+                                                setTimeout(() => setIsConverting(false), 100);
+                                            }, children: `$${value}` }, value));
+                                    }), jsx("button", { className: "group flex flex-1 items-center justify-center rounded-full border-0 p-2 font-black", style: {
+                                            backgroundColor: "#f3f4f6",
+                                            color: mergedTheme.textColor,
+                                            borderRadius: mergedTheme.borderRadius
+                                        }, onClick: handleMaxButtonClick, children: "MAX" })] }), showMinimumError && (jsx("div", { className: "mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2", children: jsxs("p", { className: "text-sm text-red-600 font-medium", children: ["Minimum amount required: ", token === "USDT" || token === "USDC"
+                                            ? 20
+                                            : (20 / (nativeUSD / 10)).toFixed(5), " ", token] }) })), hasUnsufficientBalance && (jsx("div", { className: "mt-2 pl-4 bg-red-50 border border-red-500 rounded-full p-2", children: jsxs("p", { className: "text-sm text-red-600 font-medium", children: ["Insufficient balance. Your current balance: ", parseFloat(currentTokenBalance).toFixed(5), " ", token] }) })), jsxs("div", { className: cn("mt-2 gap-4", address ? "flex flex-col" : "flex flex-col lg:flex-row"), children: [jsx("div", { className: cn("flex-1", !address && "hidden"), children: jsx(Button, { type: "submit", variant: address ? "default" : "outlinePrimary", disabled: !address || hasUnsufficientBalance || hasLowerInputBalance || isCalculatingMinBalance, className: "h-12 w-full rounded-full text-center text-xl font-bold", style: {
+                                                backgroundColor: ((_y = mergedTheme.buyButton) === null || _y === void 0 ? void 0 : _y.backgroundColor) || "#061022",
+                                                color: ((_z = mergedTheme.buyButton) === null || _z === void 0 ? void 0 : _z.textColor) || "#FFAE17",
+                                                borderRadius: mergedTheme.borderRadius
+                                            }, children: t("btnBuyGARA") }) }), jsx("div", { className: "flex-1", children: jsx(ConnectButton, { label: t("btnConnectWallet"), showBalance: false, className: "h-12 w-full rounded-full text-center text-xl font-bold", style: {
+                                                backgroundColor: ((_0 = mergedTheme.connectButton) === null || _0 === void 0 ? void 0 : _0.backgroundColor) || "#FF4473",
+                                                color: ((_1 = mergedTheme.connectButton) === null || _1 === void 0 ? void 0 : _1.textColor) || "#000000",
+                                                borderRadius: mergedTheme.borderRadius
+                                            } }) })] }), jsx("button", { type: "button", onClick: getRefferalLink, className: "w-full pt-6 px-6 rounded-full font-semibold", style: { color: mergedTheme.textColor }, children: "+ GET REFERRAL LINK" }), showPopup && jsx(ReferralPopup, { onClose: () => setShowPopup(false) }), jsx(TransactionStatusModal, { open: open, toggleOpen: handleOnOpenChange, setOpen: setOpen, senderChainTxUrl: chainTxUrl })] }), mergedTheme.backgroundColor === '#FFFFFF' && (jsx("div", { className: "absolute -bottom-[calc(50%+32px)] right-0 z-10 w-full h-full pointer-events-none", children: jsx(Image, { src: "../../assets/ice_buy_gara.svg", fill: true, alt: "Ice Background", className: "object-contain" }) }))] }) }) }));
 }
-
-// Export components
-// Export theme utilities
-const createWidgetTheme = (config) => {
-    return config;
-};
 
 var browser = function () {
   throw new Error(
@@ -28751,5 +28880,5 @@ var browser$2 = /*#__PURE__*/Object.freeze({
     default: browser$1
 });
 
-export { BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, TransactionStatusModal, WalletProviders, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };
+export { BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, ThemeProvider, TransactionStatusModal, WalletProviders, cn, createWidgetTheme, darkTheme, defaultTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore, useTheme };
 //# sourceMappingURL=index.js.map

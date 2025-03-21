@@ -17,6 +17,7 @@ interface BuyGaraProps {
   hideHeader?: boolean;
   className?: string;
   onTransactionSuccess?: ((data: TransactionData) => void) | null;
+  theme?: Partial<GaraWidgetThemeConfig>; // Add theme prop
   [key: string]: any;
 }
 
@@ -50,15 +51,45 @@ declare function usdcToGara(amount: number): number;
 
 // Store export
 declare const useGaraStore: any;
-declare const GaraStoreProvider: FC<{ children: ReactNode }>; // Added this line
+declare const GaraStoreProvider: FC<{ children: ReactNode }>;
 
-// Theme utility
-interface WidgetThemeConfig {
+// Theme exports
+interface GaraWidgetThemeConfig {
   primaryColor: string;
   secondaryColor: string;
-  [key: string]: any;
+  backgroundColor: string;
+  textColor: string;
+  borderRadius: string;
+  progressBar?: {
+    backgroundColor: string;
+    fillColor: string;
+  };
+  networkButtons?: {
+    activeBackgroundColor: string;
+    inactiveBackgroundColor: string;
+    activeTextColor: string;
+    inactiveTextColor: string;
+  };
+  inputFields?: {
+    backgroundColor: string;
+    textColor: string;
+    borderColor: string;
+  };
+  connectButton?: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  buyButton?: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  showBackgroundImage?: boolean;
 }
 
-declare function createWidgetTheme(config: WidgetThemeConfig): WidgetThemeConfig;
+declare const defaultTheme: GaraWidgetThemeConfig;
+declare const darkTheme: GaraWidgetThemeConfig;
+declare function createWidgetTheme(config: Partial<GaraWidgetThemeConfig>): GaraWidgetThemeConfig;
+declare const ThemeProvider: FC<{ theme?: Partial<GaraWidgetThemeConfig>, children: ReactNode }>;
+declare function useTheme(): { theme: GaraWidgetThemeConfig };
 
-export { BigNumberish, BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, HexAddress, Numeric, SupportedChains, SupportedTokens, TransactionStatusModal, WalletProviders, WidgetThemeConfig, cn, createWidgetTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore };
+export { BigNumberish, BuyGara, CoinInput, ConnectButton, CountdownTimer, CurrencySelect, GaraStoreProvider, GaraWidgetThemeConfig, HexAddress, Numeric, SupportedChains, SupportedTokens, ThemeProvider, TransactionStatusModal, WalletProviders, cn, createWidgetTheme, darkTheme, defaultTheme, formatAmount, getGaraEstimate, getTokenBalance, sendPayment, usdcToGara, useGaraStore, useTheme };
